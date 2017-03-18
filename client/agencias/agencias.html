@@ -1,0 +1,117 @@
+<h2>Agencias</h2>
+<div class="row">
+	<div class="col-sm-12">
+		<a class="btn btn-{{a.nuevo == true ? 'primary' : 'danger'}}" role="button" data-toggle="collapse" 
+			href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" ng-click="a.nuevaAgencia()">
+		  {{a.nuevo == true ? 'Nuevo' : 'Cancelar'}}
+		</a>
+		<div class="collapse" id="collapseExample">
+			<form name="form" class="form-horizontal" role="form" novalidate>
+		  	<div class="well">	    
+			    <div class="row">
+				    <div class="col-sm-3" valida>
+					    <label>Marca *</label>
+				    	<select class="form-control" ng-model="a.agencia.marca_id" required name="marca">
+					    	<option value="{{marca._id}}" ng-repeat="marca in a.marcas">{{marca.nombre}}</option>
+				    	</select>
+				    </div>
+				    <div class="col-sm-3" valida>
+					    <label>Nombre *</label>
+				    	<input name="nombre" type="text" class="form-control" placeholder="Nombre de la agencia" ng-model="a.agencia.nombre" required="">
+				    </div>
+				    <div class="col-sm-6" valida>
+					    <label>Dirección *</label>
+				    	<input name="direccion" type="text" class="form-control" placeholder="Dirección" ng-model="a.agencia.direccion" required="">
+				    </div>
+					</div>
+					<div class="row">
+				    <div class="col-sm-3" valida>
+					    <label>Correo *</label>
+				    	<input name="correo" type="email" class="form-control" placeholder="Correo" ng-model="a.agencia.correo" required="">
+				    </div>
+				    <div class="col-sm-3" valida>
+					    <label>Teléfono *</label>
+				    	<input name="telefono" type="text" class="form-control" placeholder="Teléfono" ng-model="a.agencia.telefono" required="">
+				    </div>
+				    <div class="col-sm-6" valida>
+					    <label>Descripción *</label>
+				    	<input name="descripcion" type="text" class="form-control" placeholder="Descripcion" ng-model="a.agencia.descripcion" required="">
+				    </div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<input type="submit" ng-click="a.guardar(a.agencia,form)" value="Guardar" class="btn btn-primary" ng-show="a.action" valida-form formulario="form">
+						<input type="submit" ng-click="a.actualizar(a.agencia,form)" value="Actualizar" class="btn btn-primary" ng-show="!a.action" valida-form formulario="form">				
+					</div>
+				</div>	  
+		  </form>
+		</div>
+	</div>
+</div>
+<br/>
+<!-- List -->
+<div class="row">
+	<div class="col-sm-12">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th width="5%"><div class="text-center">No.</div></th>
+					<th width="20%"><div class="text-center">Nombre</div></th>
+					<th width="15%"><div class="text-center">Correo</div></th>
+					<th width="15%"><div class="text-center">Teléfono</div></th>
+					<th width="35%"><div class="text-center">Descripción</div></th>
+					<th width="10%">
+						<div class="text-center">
+							Estatus
+						</div>
+					</th>
+					<th width="10%">
+						<div class="text-center">
+							Acciones
+						</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+		    <tr ng-repeat="agencia in a.agencias">
+			    <td>{{$index + 1}}</td>
+			    <td><a href="#" ui-sref="root.modelosMarca({marca_id : agencia.marca_id})">{{agencia.marca.nombre}}</a></td>
+			    <td>{{agencia.nombre}}</td>
+			    <td>{{agencia.correo}}</td>
+			    <td>{{agencia.telefono}}</td>
+			    <td>{{agencia.descripcion}}</td>
+			    <td>
+				    <div class="text-center">
+				    	<span ng-if="agencia.estatus" class="label label-success">
+							  Activo
+							</span>
+							<span ng-if="!agencia.estatus" class="label label-danger">
+							  Inactivo
+							</span>
+				    </div>
+			    </td>
+			    <td>
+				    <div class="text-center">
+					    <div class="btn-group">
+							  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <span class="caret"></span>
+							    <span class="sr-only">Toggle Dropdown</span>
+							  </button>
+							  <ul class="dropdown-menu text-left">
+							    <li><a href="#" ng-click="a.editar(agencia._id)"><i class="fa fa-pencil"></i> Editar</a></li>
+							    <li><a href="#" ng-click="a.cambiarEstatus(agencia._id)">
+							    				<i class="fa fa-{{agencia.estatus ? 'trash' : 'check' }}"></i> {{agencia.estatus ? "Desactivar" : "Activar" }}
+							    		</a>
+							    </li>
+							  </ul>
+							</div>
+				    </div>				    
+			    </td>
+		    </tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+

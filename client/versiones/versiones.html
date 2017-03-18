@@ -1,0 +1,532 @@
+<h2>Introduzca las versiones de version : {{v.modelo.nombre}}</h2>
+<div class="row">
+	<div class="col-sm-12">
+		<a class="btn btn-{{v.nuevo == true ? 'primary' : 'danger'}}" role="button" data-toggle="collapse" 
+			href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" ng-click="v.nuevoversion()">
+		  {{v.nuevo == true ? 'Nuevo' : 'Cancelar'}}
+		</a>
+		<div class="collapse" id="collapseExample">
+			<form name="form" class="form-horizontal" role="form" novalidate>
+				<section id="administrador" data-widget-grid="data-widget-grid">
+				  <div class="row">
+				    <div class="col-sm-12">
+				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				        <header>
+				          <h2>PRECIO, GARANTÍA, ORIGEN Y SERVICIOS</h2>
+				        </header>
+				        <div>
+				          <div class="widget-body">
+										<div class="row">
+											<div class="col-sm-4">
+										    <label>Precio sugerido</label>
+									    	<input type="text" class="form-control" ng-model="v.version.precioSugerido">
+									    </div>
+									    <div class="col-sm-4">
+										    <label>Garantía</label>
+									    	<input type="text" class="form-control" ng-model="v.version.garantia">
+									    </div>
+									    <div class="col-sm-4">
+										    <label>Fabricado en</label>
+									    	<input type="text" class="form-control" ng-model="v.version.fabricadoEn">
+									    </div>
+										</div>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</section>
+				<section id="administrador" data-widget-grid="data-widget-grid">
+				  <div class="row">
+				    <div class="col-sm-12">
+				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				        <header>
+				          <h2>MOTOR</h2>
+				        </header>
+				        <div>
+				          <div class="widget-body">
+										<div class="row">
+											<div class="col-sm-3">
+										    <label>Combustible</label>
+									    	<input type="text" class="form-control" ng-model="v.version.combustible">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Cilindrada</label>
+									    	<input type="text" class="form-control" ng-model="v.version.cilindrada">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Potencia</label>
+									    	<input type="text" class="form-control" ng-model="v.version.potencia">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Torque</label>
+									    	<input type="text" class="form-control" ng-model="v.version.torque">
+									    </div>
+										</div>
+										<div class="row">									    
+									    <div class="col-sm-3">
+										    <label>Cilindros</label>
+									    	<input type="text" class="form-control" ng-model="v.version.cilindros">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Válvulas</label>
+									    	<input type="text" class="form-control" ng-model="v.version.valvulas">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Alimentación</label>
+									    	<input type="text" class="form-control" ng-model="v.version.alimentacion">
+									    </div>
+										</div>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</section>
+				<section id="administrador" data-widget-grid="data-widget-grid">
+				  <div class="row">
+				    <div class="col-sm-12">
+				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				        <header>
+				          <h2>PERFORMANCE</h2>
+				        </header>
+				        <div>
+				          <div class="widget-body">
+										<div class="row">
+											<div class="col-sm-3">
+										    <label>Aceleración 0 - 100 km/h</label>
+									    	<input type="text" class="form-control" ng-model="v.version.aceleracion0100">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Velocidad máxima</label>
+									    	<input type="text" class="form-control" ng-model="v.version.velocidadMaxima">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Rendimiento en ciudad</label>
+									    	<input type="text" class="form-control" ng-model="v.version.rendimientoCiudad">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Rendimiento en ruta</label>
+									    	<input type="text" class="form-control" ng-model="v.version.rendimientoRuta">
+									    </div>
+										</div>
+										<div class="row">									    
+									    <div class="col-sm-3">
+										    <label>Rendimiento mixto</label>
+									    	<input type="text" class="form-control" ng-model="v.version.rendimientoMixto">
+									    </div>
+										</div>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</section>
+				<section id="administrador" data-widget-grid="data-widget-grid">
+				  <div class="row">
+				    <div class="col-sm-12">
+				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				        <header>
+				          <h2>TRANSMISIÓN Y CHASIS</h2>
+				        </header>
+				        <div>
+				          <div class="widget-body">
+										<div class="row">
+											<div class="col-sm-3">
+										    <label>Motor - Tracción</label>
+									    	<input type="text" class="form-control" ng-model="v.version.motorTraccion">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Transmisión</label>
+									    	<input type="text" class="form-control" ng-model="v.version.transmision">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Frenos (Del. - Tras.)</label>
+									    	<input type="text" class="form-control" ng-model="v.version.frenosDelTras">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Neumáticos</label>
+									    	<input type="text" class="form-control" ng-model="v.version.neumaticos">
+									    </div>
+										</div>
+										<div class="row">									    
+									    <div class="col-sm-3">
+										    <label>Neumáticos delanteros</label>
+									    	<input type="text" class="form-control" ng-model="v.version.neumaticosDelanteros">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Neumáticos traseros</label>
+									    	<input type="text" class="form-control" ng-model="v.version.neumaticosTraseros">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Suspensión delantera</label>
+									    	<input type="text" class="form-control" ng-model="v.version.suspensionDelantera">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Suspensión trasera</label>
+									    	<input type="text" class="form-control" ng-model="v.version.suspencionTrasera">
+									    </div>
+										</div>
+										<div class="row">
+									    <div class="col-sm-3">
+										    <label>Dirección asistida</label>
+									    	<input type="text" class="form-control" ng-model="v.version.direccionAsistida">
+									    </div>
+										</div>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</section>
+				<section id="administrador" data-widget-grid="data-widget-grid">
+				  <div class="row">
+				    <div class="col-sm-12">
+				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				        <header>
+				          <h2>MEDIDAS Y CAPACIDADES</h2>
+				        </header>
+				        <div>
+				          <div class="widget-body">
+										<div class="row">
+											<div class="col-sm-3">
+										    <label>Largo</label>
+									    	<input type="text" class="form-control" ng-model="v.version.largo">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Ancho sin espejos</label>
+									    	<input type="text" class="form-control" ng-model="v.version.anchoSinEspejos">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Ancho con espejos</label>
+									    	<input type="text" class="form-control" ng-model="v.version.anchoConEspejos">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Alto</label>
+									    	<input type="text" class="form-control" ng-model="v.version.alto">
+									    </div>
+										</div>
+										<div class="row">									    
+									    <div class="col-sm-3">
+										    <label>Distancia entre ejes</label>
+									    	<input type="text" class="form-control" ng-model="v.version.distanciaEntreEjes">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Cajuela</label>
+									    	<input type="text" class="form-control" ng-model="v.version.cajuela">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Tanque de combustible</label>
+									    	<input type="text" class="form-control" ng-model="v.version.tanqueCombustible">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Peso</label>
+									    	<input type="text" class="form-control" ng-model="v.version.peso">
+									    </div>
+										</div>
+										<div class="row">									    
+									    <div class="col-sm-3">
+										    <label>Capacidad de carga</label>
+									    	<input type="text" class="form-control" ng-model="v.version.capacidadCarga">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Altura de piso</label>
+									    	<input type="text" class="form-control" ng-model="v.version.alturaPiso">
+									    </div>
+										</div>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</section>
+				<section id="administrador" data-widget-grid="data-widget-grid">
+				  <div class="row">
+				    <div class="col-sm-12">
+				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				        <header>
+				          <h2>CONFORT</h2>
+				        </header>
+				        <div>
+				          <div class="widget-body">
+										<div class="row">
+											<div class="col-sm-3">
+										    <label>Aire acondicionado</label>
+									    	<input type="text" class="form-control" ng-model="v.version.aireAcondicionado">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Alarma de luces encendidas</label>
+									    	<input type="text" class="form-control" ng-model="v.version.alarmaLucesEncendidas">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Asientos delanteros</label>
+									    	<input type="text" class="form-control" ng-model="v.version.asientosDelanteros">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Cierre de puertas</label>
+									    	<input type="text" class="form-control" ng-model="v.version.cierrePuertas">
+									    </div>
+										</div>
+										<div class="row">									    
+									    <div class="col-sm-3">
+										    <label>Computadora de a bordo</label>
+									    	<input type="text" class="form-control" ng-model="v.version.computadoraBordo">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Espejo interior</label>
+									    	<input type="text" class="form-control" ng-model="v.version.espejoInterior">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Espejos exteriores</label>
+									    	<input type="text" class="form-control" ng-model="v.version.espejosExteriores">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Faros antiniebla</label>
+									    	<input type="text" class="form-control" ng-model="v.version.farosAntiniebla">
+									    </div>
+										</div>
+										<div class="row">									    
+									    <div class="col-sm-3">
+										    <label>Faros delanteros</label>
+									    	<input type="text" class="form-control" ng-model="v.version.farosDelanteros">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Palanca de cambios</label>
+									    	<input type="text" class="form-control" ng-model="v.version.palancaCambios">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Quemacocos</label>
+									    	<input type="text" class="form-control" ng-model="v.version.quemacocos">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Rines</label>
+									    	<input type="text" class="form-control" ng-model="v.version.rines">
+									    </div>
+										</div>
+										<div class="row">
+									    <div class="col-sm-3">
+										    <label>Vestiduras</label>
+									    	<input type="text" class="form-control" ng-model="v.version.vestiduras">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Control de velocidades crucero</label>
+									    	<input type="text" class="form-control" ng-model="v.version.controlVelocidadCrucero">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Vidrios (del. - tras.)</label>
+									    	<input type="text" class="form-control" ng-model="v.version.vidriosDelTras">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Volante</label>
+									    	<input type="text" class="form-control" ng-model="v.version.volante">
+									    </div>
+										</div>
+										<div class="row">
+									    <div class="col-sm-3">
+										    <label>Apertura cajuela y tapa combustible</label>
+									    	<input type="text" class="form-control" ng-model="v.version.aperturaCajuelaTapaCombustible">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Sensores de estacionamiento</label>
+									    	<input type="text" class="form-control" ng-model="v.version.sensoresEstacionamiento">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Cámara de visión trasera</label>
+									    	<input type="text" class="form-control" ng-model="v.version.camaraVisionTrasera">
+									    </div>
+										</div>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</section>
+				<section id="administrador" data-widget-grid="data-widget-grid">
+				  <div class="row">
+				    <div class="col-sm-12">
+				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				        <header>
+				          <h2>SEGURIDAD</h2>
+				        </header>
+				        <div>
+				          <div class="widget-body">
+										<div class="row">
+											<div class="col-sm-3">
+										    <label>Airbag</label>
+									    	<input type="text" class="form-control" ng-model="v.version.airbag">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>ABS</label>
+									    	<input type="text" class="form-control" ng-model="v.version.abs">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Distribución electrónica de frenado</label>
+									    	<input type="text" class="form-control" ng-model="v.version.distribucionElectronicaFrenado">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Asistencia de frenada de emergencia</label>
+									    	<input type="text" class="form-control" ng-model="v.version.asistenciaFrenadaEmergencia">
+									    </div>
+										</div>
+										<div class="row">									    
+									    <div class="col-sm-3">
+										    <label>Alarma e inmovilizador de motor</label>
+									    	<input type="text" class="form-control" ng-model="v.version.alarmaInmovilizadorMotor">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Anclaje para asientos infantiles</label>
+									    	<input type="text" class="form-control" ng-model="v.version.anclajeAsientosInfantiles">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Cinturones de seguridad</label>
+									    	<input type="text" class="form-control" ng-model="v.version.cinturonesSeguridad">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Otros</label>
+									    	<input type="text" class="form-control" ng-model="v.version.otros">
+									    </div>
+										</div>
+										<div class="row">									    
+									    <div class="col-sm-3">
+										    <label>Tercera luz de stop</label>
+									    	<input type="text" class="form-control" ng-model="v.version.terceraLuzStop">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Autobloqueo de puertas con velocidad</label>
+									    	<input type="text" class="form-control" ng-model="v.version.autobloqueoPuertasVelocidad">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Control de estabilidad</label>
+									    	<input type="text" class="form-control" ng-model="v.version.controlEstabilidad">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Control de tracción</label>
+									    	<input type="text" class="form-control" ng-model="v.version.controlTraccion">
+									    </div>
+										</div>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</section>
+				<section id="administrador" data-widget-grid="data-widget-grid">
+				  <div class="row">
+				    <div class="col-sm-12">
+				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				        <header>
+				          <h2>COMUNICACIÓN Y ENTRETENIMIENTO</h2>
+				        </header>
+				        <div>
+				          <div class="widget-body">
+										<div class="row">
+											<div class="col-sm-3">
+										    <label>Equipo de música</label>
+									    	<input type="text" class="form-control" ng-model="v.version.equipoMusica">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Bocinas</label>
+									    	<input type="text" class="form-control" ng-model="v.version.bocinas">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Conexión auxiliar (iPod y Mp3)</label>
+									    	<input type="text" class="form-control" ng-model="v.version.conexionAuxiliar">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Conexión USB</label>
+									    	<input type="text" class="form-control" ng-model="v.version.conexionUsb">
+									    </div>
+										</div>
+										<div class="row">									    
+									    <div class="col-sm-3">
+										    <label>Interfaz bluetooth</label>
+									    	<input type="text" class="form-control" ng-model="v.version.interfazBluetooth">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Sistema de navegación</label>
+									    	<input type="text" class="form-control" ng-model="v.version.sistemaNavegacion">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Pantalla en tablero</label>
+									    	<input type="text" class="form-control" ng-model="v.version.pantallaTablero">
+									    </div>
+										</div>
+				          </div>
+				        </div>
+				      </div>
+				    </div>
+				  </div>
+				</section>
+				<div class="row">
+					<div class="col-sm-12">
+						<input type="submit" ng-click="v.guardar(v.version,form)" value="Guardar" class="btn btn-primary" ng-show="v.action" valida-form formulario="form">
+						<input type="submit" ng-click="v.actualizar(v.version,form)" value="Actualizar" class="btn btn-primary" ng-show="!v.action" valida-form formulario="form">				
+					</div>
+				</div>	  
+		  </form>
+		</div>
+	</div>
+</div>
+<br/>
+<!-- List -->
+<div class="row">
+	<div class="col-sm-12">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th width="5%"><div class="text-center">No.</div></th>
+					<th width="20%"><div class="text-center">Marca</div></th>
+					<th width="20%"><div class="text-center">Nombre</div></th>
+					<th width="15%"><div class="text-center">Año</div></th>
+					<th width="10%">
+						<div class="text-center">
+							Estatus
+						</div>
+					</th>
+					<th width="10%">
+						<div class="text-center">
+							Acciones
+						</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+		    <tr ng-repeat="version in v.versiones">
+			    <td>{{$index + 1}}</td>
+			    <td>{{version.marca.nombre}}</td>
+			    <td><a ui-sref="root.versiones({version_id : version._id})">{{version.nombre}}</a></td>
+			    <td>{{version.anio}}</td>
+			    <td>
+				    <div class="text-center">
+				    	<span ng-if="version.estatus" class="label label-success">
+							  Activo
+							</span>
+							<span ng-if="!version.estatus" class="label label-danger">
+							  Inactivo
+							</span>
+				    </div>
+			    </td>
+			    <td>
+				    <div class="text-center">
+					    <div class="btn-group">
+							  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <span class="caret"></span>
+							    <span class="sr-only">Toggle Dropdown</span>
+							  </button>
+							  <ul class="dropdown-menu text-left">
+							    <li><a href="#" ng-click="v.editar(version._id)"><i class="fa fa-pencil"></i> Editar</a></li>
+							    <li><a href="#" ng-click="v.cambiarEstatus(version._id)">
+							    				<i class="fa fa-{{version.estatus ? 'trash' : 'check' }}"></i> {{version.estatus ? "Desactivar" : "Activar" }}
+							    		</a>
+							    </li>
+							  </ul>
+							</div>
+				    </div>				    
+			    </td>
+		    </tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+

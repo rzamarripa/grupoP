@@ -1,0 +1,100 @@
+<h2>Modelos</h2>
+<div class="row">
+	<div class="col-sm-12">
+		<a class="btn btn-{{m.nuevo == true ? 'primary' : 'danger'}}" role="button" data-toggle="collapse" 
+			href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" ng-click="m.nuevoModelo()">
+		  {{m.nuevo == true ? 'Nuevo' : 'Cancelar'}}
+		</a>
+		<div class="collapse" id="collapseExample">
+			<form name="form" class="form-horizontal" role="form" novalidate>
+		  	<div class="well">	    
+			    <div class="row">
+				    <div class="col-sm-4" valida>
+					    <label>Marca *</label>
+				    	<select class="form-control" ng-model="m.modelo.marca_id" required name="marca">
+					    	<option value="{{marca._id}}" ng-repeat="marca in m.marcas">{{marca.nombre}}</option>
+				    	</select>
+				    </div>
+				    <div class="col-sm-4" valida>
+					    <label>Nombre *</label>
+				    	<input name="nombre" type="text" class="form-control" placeholder="Nombre del carro" ng-model="m.modelo.nombre" required="">
+				    </div>
+				    <div class="col-sm-4" valida>
+					    <label>Año *</label>
+				    	<input name="anio" type="text" class="form-control" placeholder="Año" ng-model="m.modelo.anio" required="">
+				    </div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<input type="submit" ng-click="m.guardar(m.modelo,form)" value="Guardar" class="btn btn-primary" ng-show="m.action" valida-form formulario="form">
+						<input type="submit" ng-click="m.actualizar(m.modelo,form)" value="Actualizar" class="btn btn-primary" ng-show="!m.action" valida-form formulario="form">				
+					</div>
+				</div>	  
+		  </form>
+		</div>
+	</div>
+</div>
+<br/>
+<!-- List -->
+<div class="row">
+	<div class="col-sm-12">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th width="5%"><div class="text-center">No.</div></th>
+					<th width="20%"><div class="text-center">Marca</div></th>
+					<th width="20%"><div class="text-center">Nombre</div></th>
+					<th width="15%"><div class="text-center">Año</div></th>
+					<th width="10%">
+						<div class="text-center">
+							Estatus
+						</div>
+					</th>
+					<th width="10%">
+						<div class="text-center">
+							Acciones
+						</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+		    <tr ng-repeat="modelo in m.modelos">
+			    <td>{{$index + 1}}</td>
+			    <td>{{modelo.marca.nombre}}</td>
+			    <td><a ui-sref="root.versiones({modelo_id : modelo._id, marca_id : modelo.marca_id})">{{modelo.nombre}}</a></td>
+			    <td>{{modelo.anio}}</td>
+			    <td>
+				    <div class="text-center">
+				    	<span ng-if="modelo.estatus" class="label label-success">
+							  Activo
+							</span>
+							<span ng-if="!modelo.estatus" class="label label-danger">
+							  Inactivo
+							</span>
+				    </div>
+			    </td>
+			    <td>
+				    <div class="text-center">
+					    <div class="btn-group">
+							  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							    <span class="caret"></span>
+							    <span class="sr-only">Toggle Dropdown</span>
+							  </button>
+							  <ul class="dropdown-menu text-left">
+							    <li><a href="#" ng-click="m.editar(modelo._id)"><i class="fa fa-pencil"></i> Editar</a></li>
+							    <li><a href="#" ng-click="m.cambiarEstatus(modelo._id)">
+							    				<i class="fa fa-{{modelo.estatus ? 'trash' : 'check' }}"></i> {{modelo.estatus ? "Desactivar" : "Activar" }}
+							    		</a>
+							    </li>
+							  </ul>
+							</div>
+				    </div>				    
+			    </td>
+		    </tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
