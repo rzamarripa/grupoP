@@ -1,0 +1,31 @@
+<h2>Correos</h2>
+<div class="row">
+	<div class="col-sm-12">
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th width="5%"><div class="text-center">No.</div></th>
+					<th width="20%"><div class="text-center">Agencia</div></th>
+					<th ><div class="text-center">Modelo</div></th>				
+					<th ><div class="text-center">Versión</div></th>				
+					<th ><div class="text-center">Nombre</div></th>				
+					<th ><div class="text-center">Correo</div></th>				
+					<th ><div class="text-center">Teléfono</div></th>
+				</tr>
+			</thead>
+			<tbody>
+		    <tr ng-repeat="ocupacion in dc.detalleCorreos">
+			    <td>{{$index + 1}} </td>
+			    <td>{{ocupacion.agencia}} </td>
+			    <td>{{ocupacion.modelo}} </td>
+			    <td>{{ocupacion.version}} </td>
+			    <td>{{ocupacion.nombre}} </td>
+			    <td>{{ocupacion.correo}} </td>
+			    <td>{{ocupacion.telefono}} </td>
+		    </tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+

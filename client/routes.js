@@ -229,6 +229,21 @@ angular.module('casserole').config(['$injector', function ($injector) {
        }]
       }
     })
-    
+    .state('root.detalleCorreos', {
+      url: '/detalleCorreos/:fechaInicio/:fechaFin',
+      templateUrl: 'client/detalleCorreos/detalleCorreos.html',
+      controller: 'DetalleCorreosCtrl as dc',
+      resolve: {
+        "currentUser": ["$meteor", "toastr", function($meteor, toastr){
+          return $meteor.requireValidUser(function(user) {
+            if(user.roles[0] == "gerente" || user.roles[0] == "admin"){
+              return true;
+            }else{
+              return 'UNAUTHORIZED'; 
+            }           
+         });
+       }]
+      }
+    })
     ;
 }]);
