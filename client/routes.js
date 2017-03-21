@@ -197,6 +197,38 @@ angular.module('casserole').config(['$injector', function ($injector) {
       }
 */
     })
+    .state('root.bitacora', {
+      url: '/bitacora',
+      templateUrl: 'client/bitacora/bitacora.html',
+      controller: 'BitacoraCtrl as bita',
+      resolve: {
+        "currentUser": ["$meteor", "toastr", function($meteor, toastr){
+          return $meteor.requireValidUser(function(user) {
+            if(user.roles[0] == "gerente" || user.roles[0] == "admin"){
+              return true;
+            }else{
+              return 'UNAUTHORIZED'; 
+            }           
+         });
+       }]
+      }
+    })
+    .state('root.dashboard', {
+      url: '/leads',
+      templateUrl: 'client/dashboard/dashboard.html',
+      controller: 'DashboardCtrl as da',
+      resolve: {
+        "currentUser": ["$meteor", "toastr", function($meteor, toastr){
+          return $meteor.requireValidUser(function(user) {
+            if(user.roles[0] == "gerente" || user.roles[0] == "admin"){
+              return true;
+            }else{
+              return 'UNAUTHORIZED'; 
+            }           
+         });
+       }]
+      }
+    })
     
     ;
 }]);

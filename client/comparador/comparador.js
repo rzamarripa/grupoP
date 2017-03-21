@@ -245,10 +245,18 @@ angular.module("casserole")
 				  	correo : correo.correo, 
 				  	marca : marca.nombre, 
 				  	marca_id : marca._id,
+				  	agencia : agencia.nombre,
+				  	agencia_id : agencia._id,
 				  	modelo : modelo.nombre,
 				  	modelo_id : modelo._id,
 				  	version : rc.versionAContactar.nombre,
-				  	version_id : rc.versionAContactar._id});
+				  	version_id : rc.versionAContactar._id,
+				  	fecha : new Date(),
+				  	semana : moment().isoWeek(),
+				  	mes : moment().month() + 1,
+				  	dia : moment().date(),
+				  	anio : moment().year(),
+				  	diaSemana :moment().isoWeekday()});
 			  	toastr.success("Gracias por contactarnos, nosotros nos pondremos en contacto lo antes posible.") 
 				}
 	  	});

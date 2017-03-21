@@ -20,7 +20,6 @@ function BitacoraCtrl($scope, $meteor, $reactive, $state, toastr) {
       sort: self.getReactively('sort')
     },
 		{
-			seccion_id : Meteor.user() != undefined ? Meteor.user().profile.seccion_id : undefined,
 			usuario : self.getReactively("usuario_id")? self.getReactively("usuario_id"):{$ne:null}
 		}]
 	});
@@ -35,9 +34,6 @@ function BitacoraCtrl($scope, $meteor, $reactive, $state, toastr) {
   	},
   	bitacoraCount: () => {
 			return Counts.get('numberOfBitacora');
-    },
-    secciones : () => {
-      return Secciones.find();
     },
     usuarios : () => {
       return Meteor.users.find();

@@ -9,98 +9,61 @@ function DashboardCtrl($scope, $meteor, $reactive, $state, toastr) {
 	for(var i = 1; i <= 52; i++){
 		this.semanas.push(i);
 	}
+	this.fechaInicio = new Date();
+	this.fechaInicio.setHours(0,0,0,0);
+	this.fechaFin = new Date();
+	this.fechaFin.setHours(23,59,59,0);
 	
-	this.alumnos_id = [];
-	this.conceptos_id = [];	
+	this.agencias_id = [];
+	this.modelos_id = [];	
 	this.semanaActual = moment(new Date()).isoWeek();
 	this.anio = moment().get('year');
-	this.totalPagos = 0.00;
-	this.totalGastos = 0.00;
 	this.graficaGastos = [];
 	this.categorias = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 	
 	window.rc = rc;
 	
-  this.subscribe("inscripciones",()=>{
-		return [{estatus : 1, seccion_id : Meteor.user() != undefined ? Meteor.user().profile.seccion_id : "" }]
+	this.subscribe('agencias',()=>{
+		return [{estatus : true}]
 	});
-	
-	this.subscribe('campus',()=>{
-		return [{_id : Meteor.user() != undefined ? Meteor.user().profile.campus_id : "" }]
-	});
-	
-	this.subscribe('pagosPorSemana',()=>{
-		var query = {campus_id : Meteor.user() != undefined ? Meteor.user().profile.campus_id : "", semanaPago : parseInt(this.getReactively("semanaActual")), estatus : 1, anioPago : parseInt(this.getReactively("anio"))};
-		return [query]
-	});
-	
-	this.subscribe('alumnos', () => {		
-		return [{_id : { $in : this.getCollectionReactively('alumnos_id')}}]
-	});
-	
-	this.subscribe('gastos', () => {
-    return [{estatus: true, semana: parseInt(rc.getReactively("semanaActual")), anio : parseInt(rc.getReactively("anio")), campus_id: Meteor.user() != undefined ? Meteor.user().profile.campus_id : ''}];
-  });
-  
-  this.subscribe('conceptosGasto', () => {
-    return [{_id : { $in : this.getCollectionReactively('conceptos_id')}}]
-  });
-  
-  this.subscribe('cuentas', () => {
-    return [{estatus: true, seccion_id: Meteor.user() != undefined ? Meteor.user().profile.seccion_id : ''}];
-  });
-  
-  this.subscribe('grupos', () => {
-		return [{estatus : true, seccion_id : Meteor.user() != undefined ? Meteor.user().profile.seccion_id : ""}];
+		
+	this.subscribe('bitacoraCorreos', ()  => {
+		return [{ fecha : { $gte : this.getReactively("fechaInicio"), $lt : this.getReactively("fechaFin") }}];
 	});
 
   this.helpers({
-	  inscripcionesActivasSemanaActual : () => {
-		  return Inscripciones.find({semana : parseInt(this.getReactively("semanaActual"))}).count();
-	  },
-	  campus : () => {
-		  return Campus.findOne();
-	  },
-	  pagosPorGrupo : () => {
+	  porAgencia : () => {
 		  //Es la gráfica de pago que hacen los alumnos agrupada por grupos activos
-		  var grupos = Grupos.find().fetch();
+		  var bitacoraCorreos = BitacoraCorreos.find().fetch();
+		  this.totalCorreos = bitacoraCorreos.length;
 		  var arreglo = {};
-		  if(grupos){
-			  _.each(grupos, function(grupo){
+		  if(bitacoraCorreos){
+			  _.each(bitacoraCorreos, function(bitacora){
 					//Listado de Pagos realizados
-					if(undefined == arreglo[grupo.nombre]){
-						arreglo[grupo.nombre] = {};
-						arreglo[grupo.nombre].name = grupo.nombre;
-						arreglo[grupo.nombre].data = 0.00;
-						_.each(grupo.alumnos, function(alumno){
-							var pagosAlumno = PlanPagos.find({alumno_id : alumno.alumno_id}).fetch();
-							_.each(pagosAlumno, function(pago){
-								arreglo[grupo.nombre].data += pago.importe;
-							});
-						});
+					if(undefined == arreglo[bitacora.agencia_id]){
+						arreglo[bitacora.agencia_id] = {};
+						arreglo[bitacora.agencia_id].name = bitacora.agencia_id;
+						arreglo[bitacora.agencia_id].data = 1;
 					}else{
-						arreglo[grupo.nombre].name = grupo.nombre;
-						_.each(grupo.alumnos, function(alumno){
-							var pagosAlumno = PlanPagos.find({alumno_id : alumno.alumno_id}).fetch();
-							_.each(pagosAlumno, function(pago){
-								arreglo[grupo.nombre].data += pago.importe;
-							});
-						});
+						arreglo[bitacora.agencia_id].data += 1;
 					}	
 			  });
 			  
 			  arreglo = _.toArray(arreglo);
+			  _.each(arreglo, function(a){
+				  var agencia = Agencias.findOne(a.name);
+				  a.name = agencia.nombre;
+			  })
+			  console.log("arreglo", arreglo);
 			  var valores = _.pluck(arreglo, "data");
 			  var nombreGrupos = _.pluck(arreglo, "name");
-			  rc.totalPagos = _.reduce(valores, function (memo, num) { return memo + num }, 0);
-
 		  }
-			$('#pagosPorGrupo').highcharts( {
+			$('#porAgencia').highcharts( {
         chart: {
             type: 'column'
         },
         title: {
-            text: 'Ingresos por colegiatura en la semana ' + rc.semanaActual
+            text: 'Correos por Agencia del ' + moment(rc.fechaInicio).format("DD-MM-YYYY") + ' al ' + moment(rc.fechaFin).format("DD-MM-YYYY")
         },
         xAxis: {
             categories: nombreGrupos
@@ -121,21 +84,17 @@ function DashboardCtrl($scope, $meteor, $reactive, $state, toastr) {
             }
         },
         series: [{
-            name: 'Pagos',
+            name: 'Agencias',
             data: valores
         }]
     	});
+    	
 		  return arreglo;
 	  },
-	  semanalesSemana : () => {
-		  return Inscripciones.find({"planPagos.colegiatura.tipoColegiatura" : "Semanal", semana : parseInt(this.getReactively("semanaActual"))}).count();
-	  },
-	  mensualesSemana : () => {
-		  return Inscripciones.find({"planPagos.colegiatura.tipoColegiatura" : "Mensual", semana : parseInt(this.getReactively("semanaActual"))}).count();
-	  },
-	  graficaGastos : () => {
-		  var gastos = Gastos.find({ tipoGasto : {$not : "Depositos"}},{ sort : { diaSemana : 1 }}).fetch();
+	  porAgenciaPorModelo : () => {
+		  var bitacoraCarros = BitacoraCorreos.find().fetch();
 		  var arreglo = {};
+/*
 			_.each(gastos, function(gasto){
 				if(arreglo[gasto.tipoGasto] == undefined){
 					arreglo[gasto.tipoGasto] = {};
@@ -158,7 +117,7 @@ function DashboardCtrl($scope, $meteor, $reactive, $state, toastr) {
 			
 			arreglo = _.toArray(arreglo);
 		  console.log(arreglo);
-		  $('#gastosGrafica').highcharts( {
+		  $('#porAgenciaPorModelo').highcharts( {
 			  chart: {
             type: 'line'
         },
@@ -208,33 +167,20 @@ function DashboardCtrl($scope, $meteor, $reactive, $state, toastr) {
         series: arreglo
 	    });
 		  return arreglo;
-	  },
-	  totalGastos : () => {
-		  var gastoTotal = 0.00;
-		  if(rc.graficaGastos != undefined){
-			  _.each(rc.getReactively("graficaGastos"), function(gastos){
-					_.each(gastos.data, function(gasto){
-						gastoTotal += gasto;
-					})
-				});
-		  }
-			return gastoTotal;
-	  },
-	  cantidadAlumnosActivos : () => {
-		  return Inscripciones.find().count();
-	  },
+*/
+	  }/*
+,
 	  semanales : () => {
-		  return Inscripciones.find({"planPagos.colegiatura.tipoColegiatura" : "Semanal"}).count();
+		  return BitacoraCorreos.find({"planPagos.colegiatura.tipoColegiatura" : "Semanal"}).count();
 	  },
 	  quincenales : () => {
-		  return Inscripciones.find({"planPagos.colegiatura.tipoColegiatura" : "Quincenal"}).count();
+		  return BitacoraCorreos.find({"planPagos.colegiatura.tipoColegiatura" : "Quincenal"}).count();
 	  },
 	  mensuales : () => {
-		  return Inscripciones.find({"planPagos.colegiatura.tipoColegiatura" : "Mensual"}).count();
+		  return BitacoraCorreos.find({"planPagos.colegiatura.tipoColegiatura" : "Mensual"}).count();
 	  },
+*/
   });
   
  
 }
-
-//XFSrD4ZL34Dn8nG2Q
