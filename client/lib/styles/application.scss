@@ -446,3 +446,12 @@ body {
 .normal {
 	font-weight: normal;
 }
+
+.ng-hide.ng-hide-animate{
+     display: none !important;
+}
+
+.no-padding-border {
+	border: 1px solid #ddd;
+	padding: 0px;
+}

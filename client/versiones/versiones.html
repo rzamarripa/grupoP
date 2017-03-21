@@ -2,30 +2,34 @@
 <div class="row">
 	<div class="col-sm-12">
 		<a class="btn btn-{{v.nuevo == true ? 'primary' : 'danger'}}" role="button" data-toggle="collapse" 
-			href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" ng-click="v.nuevoversion()">
+			href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" ng-click="v.nuevaVersion()">
 		  {{v.nuevo == true ? 'Nuevo' : 'Cancelar'}}
 		</a>
 		<div class="collapse" id="collapseExample">
 			<form name="form" class="form-horizontal" role="form" novalidate>
-				<section id="administrador" data-widget-grid="data-widget-grid">
+				<section id="panelpanelprecio" data-widget-grid="data-widget-grid">
 				  <div class="row">
 				    <div class="col-sm-12">
-				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				      <div data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget" id="precio">
 				        <header>
 				          <h2>PRECIO, GARANTÍA, ORIGEN Y SERVICIOS</h2>
 				        </header>
 				        <div>
 				          <div class="widget-body">
 										<div class="row">
-											<div class="col-sm-4">
+											<div class="col-sm-3">
+										    <label>Nombre</label>
+									    	<input type="text" class="form-control" ng-model="v.version.nombre">
+									    </div>
+											<div class="col-sm-3">
 										    <label>Precio sugerido</label>
 									    	<input type="text" class="form-control" ng-model="v.version.precioSugerido">
 									    </div>
-									    <div class="col-sm-4">
+									    <div class="col-sm-3">
 										    <label>Garantía</label>
 									    	<input type="text" class="form-control" ng-model="v.version.garantia">
 									    </div>
-									    <div class="col-sm-4">
+									    <div class="col-sm-3">
 										    <label>Fabricado en</label>
 									    	<input type="text" class="form-control" ng-model="v.version.fabricadoEn">
 									    </div>
@@ -36,10 +40,10 @@
 				    </div>
 				  </div>
 				</section>
-				<section id="administrador" data-widget-grid="data-widget-grid">
+				<section id="panelmotor" data-widget-grid="data-widget-grid">
 				  <div class="row">
 				    <div class="col-sm-12">
-				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				      <div data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget" id="motor">
 				        <header>
 				          <h2>MOTOR</h2>
 				        </header>
@@ -83,10 +87,10 @@
 				    </div>
 				  </div>
 				</section>
-				<section id="administrador" data-widget-grid="data-widget-grid">
+				<section id="panelperformance" data-widget-grid="data-widget-grid">
 				  <div class="row">
 				    <div class="col-sm-12">
-				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				      <div data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget" id="performance">
 				        <header>
 				          <h2>PERFORMANCE</h2>
 				        </header>
@@ -122,10 +126,10 @@
 				    </div>
 				  </div>
 				</section>
-				<section id="administrador" data-widget-grid="data-widget-grid">
+				<section id="paneltransmision" data-widget-grid="data-widget-grid">
 				  <div class="row">
 				    <div class="col-sm-12">
-				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				      <div data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget" id="transmision">
 				        <header>
 				          <h2>TRANSMISIÓN Y CHASIS</h2>
 				        </header>
@@ -164,7 +168,7 @@
 									    </div>
 									    <div class="col-sm-3">
 										    <label>Suspensión trasera</label>
-									    	<input type="text" class="form-control" ng-model="v.version.suspencionTrasera">
+									    	<input type="text" class="form-control" ng-model="v.version.suspensionTrasera">
 									    </div>
 										</div>
 										<div class="row">
@@ -179,10 +183,10 @@
 				    </div>
 				  </div>
 				</section>
-				<section id="administrador" data-widget-grid="data-widget-grid">
+				<section id="panelmedidas" data-widget-grid="data-widget-grid">
 				  <div class="row">
 				    <div class="col-sm-12">
-				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				      <div data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget" id="medidas">
 				        <header>
 				          <h2>MEDIDAS Y CAPACIDADES</h2>
 				        </header>
@@ -240,10 +244,10 @@
 				    </div>
 				  </div>
 				</section>
-				<section id="administrador" data-widget-grid="data-widget-grid">
+				<section id="panelconfort" data-widget-grid="data-widget-grid">
 				  <div class="row">
 				    <div class="col-sm-12">
-				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				      <div data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget" id="confort">
 				        <header>
 				          <h2>CONFORT</h2>
 				        </header>
@@ -263,15 +267,19 @@
 									    	<input type="text" class="form-control" ng-model="v.version.asientosDelanteros">
 									    </div>
 									    <div class="col-sm-3">
+										    <label>Asientos traseros</label>
+									    	<input type="text" class="form-control" ng-model="v.version.asientosTraseros">
+									    </div>
+										</div>
+										<div class="row">
+											<div class="col-sm-3">
 										    <label>Cierre de puertas</label>
 									    	<input type="text" class="form-control" ng-model="v.version.cierrePuertas">
 									    </div>
-										</div>
-										<div class="row">									    
 									    <div class="col-sm-3">
 										    <label>Computadora de a bordo</label>
 									    	<input type="text" class="form-control" ng-model="v.version.computadoraBordo">
-									    </div>
+									    </div>									    
 									    <div class="col-sm-3">
 										    <label>Espejo interior</label>
 									    	<input type="text" class="form-control" ng-model="v.version.espejoInterior">
@@ -280,12 +288,12 @@
 										    <label>Espejos exteriores</label>
 									    	<input type="text" class="form-control" ng-model="v.version.espejosExteriores">
 									    </div>
-									    <div class="col-sm-3">
+										</div>
+										<div class="row">									    
+											<div class="col-sm-3">
 										    <label>Faros antiniebla</label>
 									    	<input type="text" class="form-control" ng-model="v.version.farosAntiniebla">
 									    </div>
-										</div>
-										<div class="row">									    
 									    <div class="col-sm-3">
 										    <label>Faros delanteros</label>
 									    	<input type="text" class="form-control" ng-model="v.version.farosDelanteros">
@@ -298,12 +306,12 @@
 										    <label>Quemacocos</label>
 									    	<input type="text" class="form-control" ng-model="v.version.quemacocos">
 									    </div>
+										</div>
+										<div class="row">
 									    <div class="col-sm-3">
 										    <label>Rines</label>
 									    	<input type="text" class="form-control" ng-model="v.version.rines">
 									    </div>
-										</div>
-										<div class="row">
 									    <div class="col-sm-3">
 										    <label>Vestiduras</label>
 									    	<input type="text" class="form-control" ng-model="v.version.vestiduras">
@@ -316,23 +324,33 @@
 										    <label>Vidrios (del. - tras.)</label>
 									    	<input type="text" class="form-control" ng-model="v.version.vidriosDelTras">
 									    </div>
+										</div>
+										<div class="row">
 									    <div class="col-sm-3">
 										    <label>Volante</label>
 									    	<input type="text" class="form-control" ng-model="v.version.volante">
 									    </div>
-										</div>
-										<div class="row">
 									    <div class="col-sm-3">
 										    <label>Apertura cajuela y tapa combustible</label>
 									    	<input type="text" class="form-control" ng-model="v.version.aperturaCajuelaTapaCombustible">
 									    </div>
 									    <div class="col-sm-3">
+										    <label>Apertura remota de garage</label>
+									    	<input type="text" class="form-control" ng-model="v.version.aperturaRemotaGarage">
+									    </div>
+									    <div class="col-sm-3">
 										    <label>Sensores de estacionamiento</label>
 									    	<input type="text" class="form-control" ng-model="v.version.sensoresEstacionamiento">
 									    </div>
+										</div>
+										<div class="row">
 									    <div class="col-sm-3">
 										    <label>Cámara de visión trasera</label>
 									    	<input type="text" class="form-control" ng-model="v.version.camaraVisionTrasera">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Encendido del motor</label>
+									    	<input type="text" class="form-control" ng-model="v.version.encendidoMotor">
 									    </div>
 										</div>
 				          </div>
@@ -341,10 +359,10 @@
 				    </div>
 				  </div>
 				</section>
-				<section id="administrador" data-widget-grid="data-widget-grid">
+				<section id="panelseguridad" data-widget-grid="data-widget-grid">
 				  <div class="row">
 				    <div class="col-sm-12">
-				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				      <div data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget" id="seguridad">
 				        <header>
 				          <h2>SEGURIDAD</h2>
 				        </header>
@@ -392,6 +410,10 @@
 									    	<input type="text" class="form-control" ng-model="v.version.terceraLuzStop">
 									    </div>
 									    <div class="col-sm-3">
+										    <label>Cabeceras delanteras activas</label>
+									    	<input type="text" class="form-control" ng-model="v.version.cabecerasDelanterasActivas">
+									    </div>
+									    <div class="col-sm-3">
 										    <label>Autobloqueo de puertas con velocidad</label>
 									    	<input type="text" class="form-control" ng-model="v.version.autobloqueoPuertasVelocidad">
 									    </div>
@@ -399,7 +421,9 @@
 										    <label>Control de estabilidad</label>
 									    	<input type="text" class="form-control" ng-model="v.version.controlEstabilidad">
 									    </div>
-									    <div class="col-sm-3">
+										</div>
+										<div class="row">
+											<div class="col-sm-3">
 										    <label>Control de tracción</label>
 									    	<input type="text" class="form-control" ng-model="v.version.controlTraccion">
 									    </div>
@@ -410,10 +434,10 @@
 				    </div>
 				  </div>
 				</section>
-				<section id="administrador" data-widget-grid="data-widget-grid">
+				<section id="panelcomunicacion" data-widget-grid="data-widget-grid">
 				  <div class="row">
 				    <div class="col-sm-12">
-				      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+				      <div data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget" id="comunicacion">
 				        <header>
 				          <h2>COMUNICACIÓN Y ENTRETENIMIENTO</h2>
 				        </header>
@@ -439,6 +463,14 @@
 										</div>
 										<div class="row">									    
 									    <div class="col-sm-3">
+										    <label>Sistema de control por voz para funciones</label>
+									    	<input type="text" class="form-control" ng-model="v.version.sistemaControlVozFunciones">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Disco duro</label>
+									    	<input type="text" class="form-control" ng-model="v.version.discoDuro">
+									    </div>
+									    <div class="col-sm-3">
 										    <label>Interfaz bluetooth</label>
 									    	<input type="text" class="form-control" ng-model="v.version.interfazBluetooth">
 									    </div>
@@ -446,9 +478,15 @@
 										    <label>Sistema de navegación</label>
 									    	<input type="text" class="form-control" ng-model="v.version.sistemaNavegacion">
 									    </div>
+										</div>
+										<div class="row">									    
 									    <div class="col-sm-3">
 										    <label>Pantalla en tablero</label>
 									    	<input type="text" class="form-control" ng-model="v.version.pantallaTablero">
+									    </div>
+									    <div class="col-sm-3">
+										    <label>Reproducción de audio vía bluetooth</label>
+									    	<input type="text" class="form-control" ng-model="v.version.reproduccionAudioViaBluetooth">
 									    </div>
 										</div>
 				          </div>
@@ -477,7 +515,6 @@
 					<th width="5%"><div class="text-center">No.</div></th>
 					<th width="20%"><div class="text-center">Marca</div></th>
 					<th width="20%"><div class="text-center">Nombre</div></th>
-					<th width="15%"><div class="text-center">Año</div></th>
 					<th width="10%">
 						<div class="text-center">
 							Estatus
@@ -494,8 +531,7 @@
 		    <tr ng-repeat="version in v.versiones">
 			    <td>{{$index + 1}}</td>
 			    <td>{{version.marca.nombre}}</td>
-			    <td><a ui-sref="root.versiones({version_id : version._id})">{{version.nombre}}</a></td>
-			    <td>{{version.anio}}</td>
+			    <td>{{version.nombre}}</td>
 			    <td>
 				    <div class="text-center">
 				    	<span ng-if="version.estatus" class="label label-success">

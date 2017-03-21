@@ -1,24 +1,557 @@
-<h2>Comparador</h2>
 <div class="row">
-	<div class="col-sm-3">
-		<img scr="/img/carro.jpg" width="200">
-							<label >Marcas</label>
-						<select  ng-options="marca._id as marca.nombre for marca in c.marcas" 
-             				ng-model="c.marca._id" class="js-example-basic-single js-states form-control" placeholder="Seleccione" ng-change="c.getMarca(c.marca._id)"></select>
-		<select class="form-control">
-			<option value="{{modelo._id}}" ng-repeat="modelo in c.modelos">{{modelo.nombre}}</option>
-		</select>
-		<select class="form-control">
-			<option value="{{version._id}}" ng-repeat="version in c.versiones">{{version.nombre}}</option>
-		</select>
+	<div class="col-sm-8 col-sm-offset-2 text-center">
+		<h2>Comparador</h2>
 	</div>
-	<div class="col-sm-3">
-		
+</div>
+
+<div class="well">
+<!--
+	<div class="row">
+		<div class="col-sm-3"></div>
+		<div class="col-sm-2" ng-repeat="indice in [0,1,2,3]">
+			<img class="thumbnail" style="width: 100% !important; height: 100% !important" src="/img/minisuv.png" ng-show="!c.imagenesSeleccionadas[indice]">
+		</div>
 	</div>
-	<div class="col-sm-3">
-		
+-->
+	<div class="row" id="scrollingDiv">
+		<div class="col-sm-4" style="width: 300px;"></div>
+		<div class="col-sm-2" style="width: 200px;" id="indice" ng-repeat="indice in [0,1,2,3]">
+			<img class="thumbnail" style="width: 100% !important; height: 100% !important" src="/img/minisuv.png" ng-show="!c.imagenesSeleccionadas[indice]">
+			<img class="thumbnail" style="width: 100% !important; height: 100% !important" src="{{c.imagenesSeleccionadas[indice]}}" ng-show="c.imagenesSeleccionadas[indice]">
+			<select  ng-options="marca._id as marca.nombre for marca in c.marcas" class="form-control" placeholder="Seleccione" ng-model="c.marcas_ids[indice]" ng-change="c.getMarca(indice, c.marcas_ids[indice])"></select>
+			
+			<select ng-show="c.modelos[indice].length > 0" ng-options="modelo._id as modelo.nombre for modelo in c.modelos[indice]" class="js-example-basic-single js-states form-control" placeholder="Seleccione" ng-model="c.modelos_ids[indice]" ng-change="c.getModelos(indice, c.modelos_ids[indice])"></select>
+			
+			<select ng-show="c.versiones[indice].length > 0"  ng-options="version._id as version.nombre for version in c.versiones[indice]" class="js-example-basic-single js-states form-control" placeholder="Seleccione" ng-model="c.versiones_ids[indice]" ng-change="c.getVersiones(indice, c.versiones_ids[indice])"></select>
+		</div>
+		<div class="col-sm-1" style="width: 200px;">
+			
+		</div>
 	</div>
-	<div class="col-sm-3">
-		
+	<br/>
+<!--
+	<div class="row" >
+		<div class="col-sm-2 col-sm-offset-3">
+			<button class="btn btn-primary" ng-click="c.comparar()">Comparar</button>
+		</div>
 	</div>
+-->
+	<div id="listaComparativa" class="row" style="z-index: 10">
+<!--
+		<div class="col-sm-3 no-padding-border no-margin">
+			<table class="table table-striped">
+				<tbody style="overflow-y: scroll; height: 200px;">
+				<tr ng-repeat="etiqueta in c.etiquetas track by $index">
+					<td>
+						{{etiqueta}}
+					</td>
+				</tr>			
+				</tbody>
+			</table>
+		</div>
+-->
+		<div class="col-sm-11" >
+			<div class="panel-group smart-accordion-default" id="accordion">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title"><a data-toggle="collapse" data-parent="#collapseOne" href="#collapseOne" class="collapsed" aria-expanded="true" class=""> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> PRECIO, GARANTÍA, ORIGEN Y SERVICIOS </a></h4>
+					</div>
+					<div id="collapseOne" class="panel-collapse collapse in" aria-expanded="true">
+						<div class="panel-body no-padding-border">
+							<table class="table-bordered table-condensed">
+								<tbody>
+									<tr>
+										<td style="width: 300px;">Nombre</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].nombre}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Precio sugerido</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].precioSugerido}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Fabricado en</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].fabricadoEn}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title"><a data-toggle="collapse" data-parent="#collapseTwo" href="#collapseTwo" class="collapsed" aria-expanded="true"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> MOTOR </a></h4>
+					</div>
+					<div id="collapseTwo" class="panel-collapse collapse in" aria-expanded="true">
+						<div class="panel-body no-padding-border">
+							<table class="table-bordered table-condensed">
+								<tbody>
+									<tr>
+										<td style="width: 300px;">Combustible</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].combustible}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Cilindrada</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].cilindrada}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Potencia</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].potencia}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Torque</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].torque}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Cilindros</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].cilindros}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Válvulas</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].valvulas}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Alimentación</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].alimentacion}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title"><a data-toggle="collapse" data-parent="#collapseThree" href="#collapseThree" class="collapsed" aria-expanded="true"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> PERFORMANCE </a></h4>
+					</div>
+					<div id="collapseThree" class="panel-collapse collapse in" aria-expanded="true">
+						<div class="panel-body no-padding-border">
+							<table class="table-bordered table-condensed">
+								<tbody>
+									<tr>
+										<td style="width: 300px;">Aceleración 0 - 100 km/h</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].aceleracion0100}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Velocidad Máxima</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].velocidadMaxima}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Rendimiento en ciudad</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].rendimientoCiudad}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Rendimiento en ruta</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].rendimientoRuta}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Rendimiento mixto</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].rendimientoMixto}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title"><a data-toggle="collapse" data-parent="#collapseFour" href="#collapseFour" class="collapsed" aria-expanded="true"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> TRANSMISIÓN Y CHASIS </a></h4>
+					</div>
+					<div id="collapseFour" class="panel-collapse collapse in" aria-expanded="true">
+						<div class="panel-body no-padding-border">
+							<table class="table-bordered table-condensed">
+								<tbody>
+									<tr>
+										<td style="width: 300px;">Motor - Tracción</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].motorTraccion}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Transmisión</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].transmision}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Frenos (Del. - Tras.)</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].frenosDelTras}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Neumáticos</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].neumaticos}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Suspensión delantera</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].suspensionDelantera}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Suspensión trasera</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].suspensionTrasera}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Dirección asistida</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].direccionAsistida}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title"><a data-toggle="collapse" data-parent="#collapseFive" href="#collapseFive" class="collapsed" aria-expanded="true"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> MEDIDAS Y CAPACIDADES </a></h4>
+					</div>
+					<div id="collapseFive" class="panel-collapse collapse in" aria-expanded="true">
+						<div class="panel-body no-padding-border">
+							<table class="table-bordered table-condensed">
+								<tbody>
+									<tr>
+										<td style="width: 300px;">Largo</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].largo}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Ancho sin espejos</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].anchoSinEspejos}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Ancho con espejos</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].anchoConEspejos}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Alto</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].alto}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Distancia entre ejes</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].distanciaEntreEjes}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Cajuela</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].cajuela}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Tanque de combustible</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].tanqueCombustible}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Peso</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].peso}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Capacidad de carga</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].capacidadCarga}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Altura de piso</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].alturaPiso}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title"><a data-toggle="collapse" data-parent="#collapseSix" href="#collapseSix" class="collapsed" aria-expanded="true"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> CONFORT </a></h4>
+					</div>
+					<div id="collapseSix" class="panel-collapse collapse in" aria-expanded="true">
+						<div class="panel-body no-padding-border">
+							<table class="table-bordered table-condensed">
+								<tbody>
+									<tr>
+										<td style="width: 300px;">Aire acondicionado</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].aireAcondicionado}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Alarma de luces encendidas</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].alarmaLucesEncendidas}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Asientos traseros</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].asientosTraseros}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Cierre de puertas</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].cierrePuertas}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Computadora de a bordo</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].computadoraBordo}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Encendido del motor</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].encendidoMotor}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Espejo interior</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].espejoInterior}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Espejos exteriores</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].espejosExteriores}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Faros antiniebla</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].farosAntiniebla}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Faros delanteros</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].farosDelanteros}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Palanca de cambios</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].palancaCambios}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Quemacocos</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].quemacocos}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Rines</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].rines}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Vestiduras</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].vestiduras}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Control de velocidad crucero</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].controlVelocidadCrucero}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Vidrios (del. - tras.)</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].vidriosDelTras}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Volante</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].volante}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Apertura cajuela y tapa combustible</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].aperturaCajuelaTapaCombustible}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Apertura remota de garage</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].aperturaRemotaGarage}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Cámara de visión trasera</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].camaraVisionTrasera}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title"><a data-toggle="collapse" data-parent="#collapseSeven" href="#collapseSeven" class="collapsed" aria-expanded="true"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> SEGURIDAD </a></h4>
+					</div>
+					<div id="collapseSeven" class="panel-collapse collapse in" aria-expanded="true">
+						<div class="panel-body no-padding-border">
+							<table class="table-bordered table-condensed">
+								<tbody>
+									<tr>
+										<td style="width: 300px;">Airbag</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].airbag}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">ABS</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].abs}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Distribución electrónica de frenado</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].distribucionElectronicaFrenado}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Alarma e inmovilizador de motor</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].alarmaInmovilizadorMotor}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Anclaje para asientos infantiles</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].anclajeAsientosInfantiles}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Cinturones de seguridad</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].cinturonesSeguridad}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Otros</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].otros}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Tercera luz de stop</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].terceraLuzStop}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Cabeceras delanteras activas</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].cabecerasDelanterasActivas}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Autobloqueo de puertas con velocidad</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].autobloqueoPuertasVelocidad}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Control de estabilidad</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].controlEstabilidad}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Control de tracción</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].controlTraccion}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Rines</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].rines}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Vestiduras</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].vestiduras}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Control de velocidad crucero</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].controlVelocidadCrucero}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Vidrios (del. - tras.)</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].vidriosDelTras}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Volante</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].volante}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Apertura cajuela y tapa combustible</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].aperturaCajuelaTapaCombustible}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Apertura remota de garage</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].aperturaRemotaGarage}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Cámara de visión trasera</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].camaraVisionTrasera}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h4 class="panel-title"><a data-toggle="collapse" data-parent="#collapseEight" href="#collapseEight" class="collapsed" aria-expanded="true"> <i class="fa fa-lg fa-angle-down pull-right"></i> <i class="fa fa-lg fa-angle-up pull-right"></i> COMUNICACIÓN Y ENTRETENIMIENTO </a></h4>
+					</div>
+					<div id="collapseEight" class="panel-collapse collapse in" aria-expanded="true">
+						<div class="panel-body no-padding-border">
+							<table class="table-bordered table-condensed">
+								<tbody>
+									<tr>
+										<td style="width: 300px;">Equipo de música</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].equipoMusica}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Bocinas</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].bocinas}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Conexión auxiliar (iPod y Mp3)</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].conexionAuxiliar}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Conexión USB</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].conexionUsb}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Sistema de control por voz para funciones</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].sistemaControlVozFunciones}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Disco duro</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].discoDuro}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Interfaz bluetooth</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].interfazBluetooth}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Sistema de navegación</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].sistemaNavegacion}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Pantalla en tablero</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].pantallaTablero}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;">Reproducción de audio vía bluetooth</td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">{{c.versionesSeleccionadas[numero].reproduccionAudioViaBluetooth}}</td>
+									</tr>
+									<tr>
+										<td style="width: 300px;"><strong>Contactar</strong></td>
+										<td style="width: 210px;" ng-repeat="numero in [0,1,2,3]">
+											<button type="button" ng-click="c.mostrarCiudades(numero, c.versionesSeleccionadas[numero])" ng-show="c.versionesSeleccionadas[numero] != undefined" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+											  Contactar Agencia
+											</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Contactar a la agencia</h4>
+      </div>
+      <div class="modal-body">
+	      <form name="formModal" id="formModal" class="form-horizontal">
+        	<div class="widget-body">
+						<fieldset>
+							<legend>Información del modelo <strong>{{c.modeloAContactar.nombre}}</strong> y versión <strong>{{c.versionAContactar.nombre}}</strong></legend>
+							<div class="form-group" valida>
+								<label class="col-md-2 control-label" for="select-1">Ciudad</label>
+								<div class="col-md-10">
+									<select name="ciudadCorreo" class="form-control" id="select-1" ng-model="c.correo.agencia_id" required="">
+										<option value=""></option>
+										<option value="{{ciudad.agencia_id}}" ng-repeat="ciudad in c.ciudades">{{ciudad.nombre}}</option>
+									</select> 
+								</div>
+							</div>
+							<div class="form-group" valida>
+								<label class="col-md-2 control-label" for="select-1">Nombre</label>
+								<div class="col-md-10">
+									<input name="nombreCorreo" type="text" class="form-control" placeholder="Nombre" ng-model="c.correo.nombre" required=""/>
+								</div>
+							</div>
+							<div class="form-group" valida>
+								<label class="col-md-2 control-label" for="select-1">Teléfono</label>
+								<div class="col-md-10">
+									<input name="telefonoCorreo" type="text" class="form-control" placeholder="Teléfono" ng-model="c.correo.telefono" required=""/>
+								</div>
+							</div>
+							<div class="form-group" valida>
+								<label class="col-md-2 control-label" for="select-1">Correo</label>
+								<div class="col-md-10">
+									<input name="correoCorreo" type="email" class="form-control" placeholder="Correo" ng-model="c.correo.correo" required=""/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label" for="select-1">Comentario</label>
+								<div class="col-md-10">
+									<textarea role="3" type="text" class="form-control" placeholder="Escriba su comentario" ng-model="c.correo.comentario"></textarea>
+								</div>
+							</div>
+							
+						</fieldset>
+					</div>
+				</div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	        <button type="button" class="btn btn-primary" ng-click="c.enviarEmail(formModal, c.correo)" valida-form formulario="formModal">Enviar</button>
+	      </div>
+      </form>
+    </div>
+  </div>
 </div>

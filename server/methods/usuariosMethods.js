@@ -33,13 +33,16 @@ Meteor.methods({
 	},
 */
 	sendEmail: function (to, from, subject, text) {
+		console.log(to,from,subject, text);
     this.unblock();
     Email.send({
       to: to,
       from: from,
       subject: subject,
-      text: text
+      html: text
     });
+    
+    return true;
   },
 	userIsInRole: function(usuario, rol, grupo, vista){
 		if (!Roles.userIsInRole(usuario, rol, grupo)) {

@@ -179,10 +179,11 @@ angular.module('casserole').config(['$injector', function ($injector) {
        }]
       }
     })
-    .state('root.comparador', {
+    .state('anon.comparador', {
       url: '/comparador',
       templateUrl: 'client/comparador/comparador.html',
       controller: 'ComparadorCtrl as c',
+/*
       resolve: {
         "currentUser": ["$meteor", "toastr", function($meteor, toastr){
           return $meteor.requireValidUser(function(user) {
@@ -194,6 +195,7 @@ angular.module('casserole').config(['$injector', function ($injector) {
          });
        }]
       }
+*/
     })
     
     ;

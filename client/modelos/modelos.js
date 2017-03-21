@@ -34,6 +34,7 @@ angular.module("casserole")
     this.action = true;
     this.nuevo = !this.nuevo;
     this.modelo = {};		
+    $('#imagen').val("");
   };
   
   this.guardar = function(modelo,form)
@@ -84,5 +85,54 @@ angular.module("casserole")
 		
 		Modelos.update({_id: id},{$set :  {estatus : modelo.estatus}});
   };
+  
+  this.AlmacenaImagen = function(imagen)
+	{	
+		this.modelo.imagen = imagen;
+	}
+  
+  $(document).ready( function() {
+		
+		var imagen = document.getElementById('imagen');			
+		var fileDisplayArea1 = document.getElementById('fileDisplayArea1');
+		
+					
+		//JavaScript para agregar el Curp Imagen
+		imagen.addEventListener('change', function(e) {
+			var file = imagen.files[0];
+			
+			var imageType;
+			
+			if (file.type == "application/pdf")
+					imageType = /application.*/;
+			else
+					imageType = /image.*/;		
+	
+			//console.log(imageType);
+			
+			if (file.type.match(imageType)) {
+				
+				if (file.size <= 1000000)
+				{
+					
+					var reader = new FileReader();
+	
+					reader.onload = function(e) {
+	
+					rc.AlmacenaImagen(reader.result);
+	
+					}
+					reader.readAsDataURL(file);			
+				}else {
+					toastr.error("Error el archivo supera 1 MB");
+					return;
+				}
+				
+			} else {
+				fileDisplayArea1.innerHTML = "File not supported!";
+			}
+							
+		});
+	});
 	
 };

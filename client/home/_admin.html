@@ -1,9 +1,9 @@
 <!-- Menú de Administrador -->
-<section id="administrador" data-widget-grid="data-widget-grid">
+<section data-widget-grid="data-widget-grid">
 	<h1>Super Administrador</h1>
   <div class="row">
     <div class="col-sm-12">
-      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+      <div data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget" id="admin">
         <header>
           <h2>Administración de Marcas</h2>
         </header>
@@ -11,22 +11,16 @@
           <div class="widget-body">
 						<div class="row">
 							<div class="col-sm-3">
-								<a ui-sref="root.marcas" href="javascript:void(0);" class="btn btn-labeled btn-warning btn-block" style="text-align: left"> <span class="btn-label"><i class="fa fa-lg fa-fw fa-building"></i></span>Marcas</a>
+								<a ui-sref="root.marcas" href="javascript:void(0);" class="btn btn-labeled btn-warning btn-block" style="text-align: left"> <span class="btn-label"><i class="fa fa-lg fa-fw fa-cogs"></i></span>Marcas</a>
 							</div>
 							<div class="col-sm-3">
 								<a ui-sref="root.agencias" href="javascript:void(0);" class="btn btn-labeled btn-warning btn-block" style="text-align: left"> <span class="btn-label"><i class="fa fa-lg fa-fw fa-building"></i></span>Agencias</a>
 							</div>
 							<div class="col-sm-3">
-								<a ui-sref="root.modelos" href="javascript:void(0);" class="btn btn-labeled btn-warning btn-block" style="text-align: left"> <span class="btn-label"><i class="fa fa-lg fa-fw fa-building"></i></span>Modelos</a>
+								<a ui-sref="root.modelos" href="javascript:void(0);" class="btn btn-labeled btn-warning btn-block" style="text-align: left"> <span class="btn-label"><i class="fa fa-lg fa-fw fa-car"></i></span>Modelos</a>
 							</div>
 							<div class="col-sm-3">
-								<a ui-sref="root.versiones" href="javascript:void(0);" class="btn btn-labeled btn-warning btn-block" style="text-align: left"> <span class="btn-label"><i class="fa fa-lg fa-fw fa-building"></i></span>Versiones</a>
-							</div>
-						</div>
-						<br/>
-						<div class="row">
-							<div class="col-sm-3">
-								<a ui-sref="root.comparador" href="javascript:void(0);" class="btn btn-labeled btn-warning btn-block" style="text-align: left"> <span class="btn-label"><i class="fa fa-lg fa-fw fa-building"></i></span>Comparador</a>
+								<a ui-sref="anon.comparador" href="javascript:void(0);" class="btn btn-labeled btn-warning btn-block" style="text-align: left"> <span class="btn-label"><i class="fa fa-lg fa-fw fa-object-group"></i></span>Comparador</a>
 							</div>
 						</div>
           </div>
@@ -36,7 +30,7 @@
   </div>
   <div class="row">
   	<div class="col-sm-12">
-  		<div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+  		<div data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget" id="catalogos">
         <header>
           <h2>Catálogos</h2>
         </header>
@@ -57,7 +51,25 @@
   </div>
   <div class="row">
     <div class="col-sm-12">
-      <div data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget">
+      <div data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget" id="utilidades">
+        <header>
+          <h2>Reportes</h2>
+        </header>
+        <div>
+          <div class="widget-body">
+						<div class="row">
+							<div class="col-sm-3">
+								<a ui-sref="root.leads" href="javascript:void(0);" class="btn btn-labeled btn-warning btn-block" style="text-align: left"> <span class="btn-label"><i class="fa fa-lg fa-fw fa-pie-chart"></i></span>Leads</a>
+						  </div>
+						</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div data-widget-togglebutton="false" data-widget-fullscreenbutton="false" data-widget-color="blue" data-widget-colorbutton="false" data-widget-editbutton="false" data-widget-deletebutton="false" data-jarvis-widget="data-jarvis-widget" id="utilidades">
         <header>
           <h2>Utilidades del Sistema</h2>
         </header>

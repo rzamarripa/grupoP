@@ -50,6 +50,3 @@ shell-server
 email
 mrt:nprogress
 mobile-status-bar
-tgienger:angular-dropzone
-cfs:gridfs
-cfs:standard-packages

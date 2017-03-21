@@ -1,112 +1,257 @@
 angular.module("casserole")
-.controller("ComparadorCtrl", ComparadorCtrl);  
+.controller("ComparadorCtrl", ComparadorCtrl);
  function ComparadorCtrl($scope, $meteor, $reactive, $state, $stateParams, toastr){
  	let rc = $reactive(this).attach($scope);
   
+  var $scrollingDiv = $("#scrollingDiv");
+	var $listaComparativa = $("#listaComparativa");
+	$(window).scroll(function(){     
+		if ($(window).scrollTop()>50){
+    	$scrollingDiv
+				.css("position",'fixed' )  
+				.css("top",'0px' )
+				.css("background-color", "white")
+				.css("z-index", 1)
+				.css("border-bottom", "1px solid #ddd")
+				.css("padding-bottom", "3px");
+		} else {
+			$scrollingDiv
+      	.css("position",'' )    
+        .css("top",'' )
+        .css("background-color", "")
+        .css("border-bottom", "")
+        .css("padding-bottom", "");
+		}
+	});
+        
   this.action = true;
   this.nuevo = true;
-  this.marca1_id = "";
-  this.modelo1_id = "";
-  this.version1_id = "";
+  this.comparando = false;
+  this.etiquetas = [
+	  "Nombre",
+	  "Precio sugerido",
+	  "Garantía",
+	  "Fabricado en",
+	  "Combustible",
+	  "Cilindrada",
+	  "Potencia",
+	  "Torque",
+	  "Cilindros",
+	  "Válvulas",
+	  "Alimentación",
+	  "Aceleración 0-100 km/h",
+	  "Velocidad máxima",
+	  "Rendimiento en ciudad",
+	  "Rendimiento en ruta",
+	  "Rendimiento mixto",
+	  "Motor - Tracción",
+	  "Transmisión",
+	  "Frenos (Del. - Tras.)",
+	  "Neumáticos",
+	  "Neumáticos delanteros",
+	  "Neumáticos traseros",
+	  "Suspensión delantera",
+	  "Suspensión trasera",
+	  "Dirección asistida",
+	  "Largo",
+	  "Ancho sin espejos",
+	  "Ancho con espejos",
+	  "Alto",
+	  "Distancia entre ejes",
+	  "Cajuela",
+	  "Tanque de combustible",
+	  "Peso",
+	  "Capacidad de carga",
+	  "Altura de piso",
+	  "Aire acondicionado",
+	  "Alarma de luces encendidas",
+	  "Asientos delanteros",
+	  "Asientos traseros",
+	  "Cierre de puertas",
+	  "Computadora de a bordo",
+	  "Espejo interior",
+	  "Espejos exteriores",
+	  "Faros antiniebla",
+	  "Faros delanteros",
+	  "Palanca de cambios",
+	  "Quemacocos",
+	  "Rines",
+	  "Vestiduras",
+	  "Control de velocidad crucero",
+	  "Vidrios (del. - tras.)",
+	  "Volante",
+	  "Apertura cajuela y tapa comb.",
+	  "Apertura remota de garage",
+	  "Sensores de estacionamiento",
+	  "Cámara de visión trasera",
+	  "Airbag",
+	  "ABS",
+	  "Distribución electrónica de frenado",
+	  "Asistencia en frenada de emergencia",
+	  "Alarma e inmovilizador de motor",
+	  "Anclaje para asientos infantiles",
+	  "Cinturones de seguridad",
+	  "Otros",
+	  "Tercera luz de stop",
+	  "Autobloqueo de puertas con velocidad",
+	  "Control de estabilidad",
+	  "Control de tracción",
+	  "Equipo de música",
+	  "Bocinas",
+	  "Conexión auxiliar (iPod y Mp3)",
+	  "Conexión USB",
+	  "Interfaz bluetooth",
+	  "Sistema de navegación",
+	  "Pantalla en tablero",
+	  "Reproducción de audio vía bluetooth"	  
+  ];
+  this.idsSeleccionadas = Array(4).fill(undefined);
+  this.marcas_ids = Array(4).fill(undefined);
+	this.modelos_ids = Array(4).fill(undefined);
+	this.versiones_ids = Array(4).fill(undefined);
+	this.versionesSeleccionadas = Array(4).fill(undefined);
+	this.imagenesSeleccionadas = Array(4).fill(undefined);
+	this.versionAContactar = {};
+	this.modeloAContactar = {};
+	this.ciudades = [];
+	
+	this.modelos = Array(4).fill([]);
+	this.versiones = Array(4).fill([]);
+	this.marcaActualizar = function(){
+		rc.modelos[rc.numero] = Modelos.find({marca_id : rc.marcas_ids[rc.numero]}).fetch();
+		rc.versionesSeleccionadas[rc.numero] = undefined;
+	};
+	this.modeloActualizar = function(){
+		rc.versiones[rc.numero] = Versiones.find({modelo_id : rc.modelos_ids[rc.numero]}).fetch();
+/*
+		rc.versiones[rc.numero][1] = {
+			marca_id : rc.versiones[rc.numero][0].marca_id,
+			modelo_id : rc.versiones[rc.numero][0].modelo_id,
+			marca : Marcas.findOne(rc.versiones[rc.numero][0].marca_id),
+			agencia : Agencias.findOne({marca_id : rc.versiones[rc.numero][0].marca_id})
+		}
+*/
+		rc.versionesSeleccionadas[rc.numero] = undefined;
+	};
+
+	this.numero = 0;
+	window.rc = rc;
   
   this.subscribe('marcas',()=>{
-		return [{estatus : true, _id : $stateParams.marca_id}]
+		return [{estatus : true}]
 	});
-  
-  this.subscribe('modelos',()=>{
-		return [{estatus : true, _id : $stateParams.modelo_id}]
+	
+	this.subscribe('agencias',()=>{
+		return [{estatus : true}]
+	});
+	
+  this.subscribe('modelos', ()=>{
+		return [{estatus : true, marca_id : { $in : this.getCollectionReactively("marcas_ids")}}]
+	},{
+		onReady : this.marcaActualizar
 	});
   
 	this.subscribe('versiones',()=>{
-		return [{}]
+		return [{estatus : true, modelo_id : { $in : this.getCollectionReactively("modelos_ids")}}]
+	},{
+		onReady : this.modeloActualizar
 	});
 	
-	this.version = {}; 
-
 	this.helpers({
 	  marcas : () => {
 		  return Marcas.find();
-	  },
-	  modelo : () => {
-		  return Modelos.findOne($stateParams.modelo_id);
-	  },
-	  versiones : () => {
-		  var versiones = Versiones.find().fetch();
-		  if(versiones){
-			  _.each(versiones, function (version){
-				  version.marca = Marcas.findOne(version.marca_id)
-				  version.version = Versiones.findOne(version.marca_id)
-			  })
-		  }
-		  return versiones;
-	  }
+	  }	  
   });
   
-  this.nuevaVersion = function()
-  {
-    this.action = true;
-    this.nuevo = !this.nuevo;
-    this.version = {};		
-  };
+  this.getMarca = function(numero, marca_id){
+	  this.marcas_ids[numero] = marca_id;
+	  this.numero = numero;	  
+  }
   
-  this.guardar = function(version,form)
-	{
-		if(form.$invalid){
-      toastr.error('Error al guardar los datos.');
+  this.getModelos = function(numero, modelo_id){
+	  var modelo = Modelos.findOne(modelo_id);
+	  this.modelos_ids[numero] = modelo_id;
+	  this.imagenesSeleccionadas[numero] = modelo.imagen;
+	  this.numero = numero;
+  }
+  
+  this.getVersiones = function(numero, version_id){
+	  this.versiones_ids[numero] = version_id;
+	  var versionActual = Versiones.findOne(version_id);
+	  if(versionActual._id != undefined){
+		  rc.idsSeleccionadas[numero] = versionActual._id;
+		  delete versionActual._id;
+		  delete versionActual.marca_id;
+		  delete versionActual.modelo_id;
+		  delete versionActual.usuarioInserto_id;
+		  delete versionActual.usuarioActualizo_id;
+		  delete versionActual.estatus;
+		  this.versionesSeleccionadas[numero] = versionActual;
+		  
+	  }	  
+  }
+  
+  this.comparar = function(){
+	  this.comparando = true;
+  }
+  
+  this.mostrarCiudades = function(indice, version){
+	  rc.versionAContactar = Versiones.findOne(rc.idsSeleccionadas[indice]);
+	  rc.modeloAContactar = Modelos.findOne(rc.versionAContactar.modelo_id);
+	  var agencias = Agencias.find({marca_id : rc.versionAContactar.marca_id}).fetch();
+	  rc.ciudades = [];
+	  _.each(agencias, function(agencia){
+		  rc.ciudades.push({
+			  nombre : agencia.ciudad,
+			  agencia_id : agencia._id
+		  })
+	  });
+  }
+  
+  this.enviarEmail = function(formModal, correo){
+	  
+	  if(formModal.$invalid){
+      toastr.error('Los campos rojos no pueden ir vacíos y debe ser un correo válido.');
       return;
+	  }else{
+			$('#formModal')[0].reset();
 	  }
-		version.estatus = true;
-		version.marca_id = $stateParams.marca_id;
-		version.modelo_id = $stateParams.modelo_id;
-		version.usuarioInserto_id = Meteor.userId();
-		Versiones.insert(version);
-		toastr.success('Guardado correctamente.');
-		this.version = {}; 
-		$('.collapse').collapse('hide');
-		this.nuevo = true;
-	};
-	
-	this.editar = function(id)
-	{
-    this.version = Versiones.findOne({_id:id});
-    this.action = false;
-    $('.collapse').collapse('show');
-    this.nuevo = false;
-	};
-	
-	this.actualizar = function(version,form)
-	{
-		if(form.$invalid){
-      toastr.error('Error al actualizar los datos del Turno.');
-      return;
-	  }
-		var idTemp = version._id;
-		delete version._id;		
-		version.usuarioActualizo_id = Meteor.userId(); 
-		Versiones.update({_id:idTemp},{$set:version});
-		toastr.success('Actualizado correctamente.');
-		$('.collapse').collapse('hide');
-		this.nuevo = true;
-	};
-
-	this.cambiarEstatus = function(id)
-	{
-		var version = Versiones.findOne({_id:id});
-		if(version.estatus == true)
-			version.estatus = false;
-		else
-			version.estatus = true;
-		
-		Versiones.update({_id: id},{$set :  {estatus : version.estatus}});
-  };
-  
-  
-  this.getMarcas= function(marca_id)
-		{
-		
-	
-			console.log(marca_id);
-			rc.marcas = Marcas.findOne(marca_id);
-		};
-	
+	  NProgress.start()
+	  var agencia = Agencias.findOne(correo.agencia_id);
+	  var marca = Marcas.findOne(agencia.marca_id);
+	  var modelo = Modelos.findOne(rc.versionAContactar.modelo_id);
+	  if(correo.comentario == undefined)
+	  	correo.comentario = "No dejó comentario";
+	  var comentario = 	correo.comentario + "<br/><br/>" +
+	  									"<strong>Marca:</strong> " + marca.nombre + "<br/>" +
+	  									"<strong>Modelo:</strong> " + modelo.nombre + "<br/>" +
+	  									"<strong>Versión:</strong> " + rc.versionAContactar.nombre + "<br/><br/>" +
+	  									"<strong>" + correo.nombre + "</strong><br/>" +
+	  									"<strong>Teléfono:</strong> " + correo.telefono + "<br/>" +
+	  									"<strong>Correo:</strong> " + correo.correo + "<br/>";
+	  var de = "Clientes <" + correo.correo + ">";
+	  $('#myModal').modal('hide')
+	  Meteor.apply("sendEmail",
+	  	[agencia.correo, 
+	  	de,
+	  	marca.nombre + "-" + modelo.nombre + "-" + rc.versionAContactar.nombre, 
+	  	comentario], function(error, result){
+		  	NProgress.set(0.4) 
+		  	if(result){
+			  	NProgress.done();
+			  	BitacoraCorreos.insert({
+				  	nombre : correo.nombre, 
+				  	telefono : correo.telefono, 
+				  	correo : correo.correo, 
+				  	marca : marca.nombre, 
+				  	marca_id : marca._id,
+				  	modelo : modelo.nombre,
+				  	modelo_id : modelo._id,
+				  	version : rc.versionAContactar.nombre,
+				  	version_id : rc.versionAContactar._id});
+			  	toastr.success("Gracias por contactarnos, nosotros nos pondremos en contacto lo antes posible.") 
+				}
+	  	});
+	  	rc.correo = {};
+  }
 };
