@@ -6,19 +6,16 @@ let rc = $reactive(this).attach($scope);
 	this.materialIndice = 0;
 
 	this.subscribe('productos',()=>{
-	return [{estatus:true}] 
-    });
+		return [{estatus:true}] 
+	});
 
-    this.subscribe('materiales',()=>{
-	return [{estatus:true}] 
-    });
+	this.subscribe('materiales',()=>{
+		return [{estatus:true}] 
+	});
 
-    this.subscribe('unidades',()=>{
-	return [{estatus:true}] 
-    });
-
- 
- 
+  this.subscribe('unidades',()=>{
+		return [{estatus:true}] 
+	});
 	
   this.action = true;
   this.agregar = true;
@@ -33,9 +30,7 @@ let rc = $reactive(this).attach($scope);
 	  },
 	  unidades : () => {
 		  return Unidades.find();
-	  },
-	
-	
+	  }
   });
   
 	this.nuevo = true;

@@ -5,8 +5,13 @@ angular.module("casserole")
   
   this.action = true;
   this.nuevo = true;
+  this.cambiarPassword = false;
   window.rc = rc;
   
+  this.subscribe('usuariosAgencia',()=>{
+		return [{}]
+	});
+ 
 	this.subscribe('marcas',()=>{
 		return [{}]
 	 });
@@ -34,8 +39,10 @@ angular.module("casserole")
 	  
 		marca.estatus = true;
 		marca.usuarioInserto_id = Meteor.userId();
+		var marca_id = Marcas.insert(marca);
+		marca.marca_id = marca_id;
+		Meteor.call('createUsuario', marca, 'marca');
 		
-		Marcas.insert(marca);
 		
 		toastr.success('Guardado correctamente.');
 		this.marca = {}; 
@@ -61,6 +68,7 @@ angular.module("casserole")
 		delete marca._id;		
 		marca.usuarioActualizo_id = Meteor.userId(); 
 		Marcas.update({_id:idTemp},{$set:marca});
+		Meteor.call('updateUsuario', marca, idTemp, 'marca');
 		toastr.success('Actualizado correctamente.');
 		$('.collapse').collapse('hide');
 		this.nuevo = true;
@@ -80,6 +88,39 @@ angular.module("casserole")
   this.AlmacenaImagen = function(imagen)
 	{	
 		this.marca.imagen = imagen;
+	}
+	
+	this.validarContrasena = function(contrasena, confirmarContrasena){
+		if(contrasena && confirmarContrasena){
+			if(contrasena === confirmarContrasena && contrasena.length > 0 && confirmarContrasena.length > 0){
+				rc.validaContrasena = true;
+			}else{
+				rc.validaContrasena = false;
+			}
+		}
+	}
+	
+	this.validarUsuario = function(username){
+		if(this.nuevo){
+			var existeUsuario = Meteor.users.find({username : username}).count();
+			if(existeUsuario){
+				rc.validaUsuario = false;
+			}else{
+				rc.validaUsuario = true;
+			}
+		}else{
+			var existeUsuario = Meteor.users.find({username : username}).count();
+			if(existeUsuario){
+				var usuario = Meteor.users.findOne({username : username});
+				if(rc.usernameSeleccionado == usuario.username){
+					rc.validaUsuario = true;
+				}else{
+					rc.validaUsuario = false;
+				}
+			}else{
+				rc.validaUsuario = true;
+			}
+		}		
 	}
   
   $(document).ready( function() {

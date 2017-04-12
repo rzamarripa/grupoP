@@ -6,6 +6,7 @@ angular.module("casserole")
   this.action = true;
   this.nuevo = true;
   
+	
 	this.subscribe('agencias',()=>{
 		return [{}]
 	 });
@@ -43,8 +44,13 @@ angular.module("casserole")
       return;
 	  }
 		agencia.estatus = true;
+		
 		agencia.usuarioInserto_id = Meteor.userId();
-		Agencias.insert(agencia);
+		console.log(agencia);
+
+		var agencia_id = Agencias.insert(agencia);
+		agencia.agencia_id = agencia_id;
+
 		toastr.success('Guardado correctamente.');
 		this.agencia = {}; 
 		$('.collapse').collapse('hide');
@@ -62,18 +68,19 @@ angular.module("casserole")
 	this.actualizar = function(agencia,form)
 	{
 		if(form.$invalid){
-      toastr.error('Error al actualizar los datos del Turno.');
+      toastr.error('Error al actualizar los datos de la agencia.');
       return;
 	  }
 		var idTemp = agencia._id;
 		delete agencia._id;		
 		agencia.usuarioActualizo_id = Meteor.userId(); 
 		Agencias.update({_id:idTemp},{$set:agencia});
+		
 		toastr.success('Actualizado correctamente.');
 		$('.collapse').collapse('hide');
 		this.nuevo = true;
 	};
-
+	
 	this.cambiarEstatus = function(id)
 	{
 		var agencia = Agencias.findOne({_id:id});

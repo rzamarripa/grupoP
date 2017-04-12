@@ -9,7 +9,7 @@
 			<form name="form" class="form-horizontal" role="form" novalidate>
 		  	<div class="well">	   
 			    <div class="row">
-					  <div class="col-sm-2">
+					  <div class="col-sm-4">
 					    <label>Imagen</label>
 				      <input type="file" id="imagen" name="imagen" ng-model="ma.marca.imagen"/>
 				    </div>
@@ -17,12 +17,38 @@
 					    <label>Nombre *</label>
 				    	<input name="nombre" type="text" class="form-control" placeholder="Nombre de la Marca" ng-model="ma.marca.nombre" required="">
 				    </div>
-				    <div class="col-sm-6" valida>
+				    <div class="col-sm-4" valida>
 					    <label>Descripción *</label>
 				    	<input name="descripcion" type="text" class="form-control" placeholder="Descripcion" ng-model="ma.marca.descripcion" required="">
 				    </div>
 					</div>
 				</div>
+				<div class="well">
+		  		<div class="row">
+			  		<div class="col-sm-4" ng-class="!ma.validaContrasena == true ? 'has-error' : 'has-success'">					    
+				    	<label>Usuario *</label>
+				    	<input type="text" class="form-control" placeholder="Usuario" 
+				    	ng-model="ma.marca.usuario" 
+				    	ng-disabled="ma.cambiarPassword"
+				    	ng-change="ma.validarUsuario(ma.marca.usuario)">
+			    	</div>
+			    	<div class="col-sm-4" ng-class="!ma.validaContrasena == true ? 'has-error' : 'has-success'">					    
+				    	<label>Contraseña *</label>
+				    	<input type="password" class="form-control" placeholder="Contraseña" 
+				    	ng-model="ma.marca.password" 
+				    	ng-disabled="ma.cambiarPassword"
+				    	ng-change="ma.validarContrasena(ma.marca.password, ma.marca.confirmarContrasena)">
+			    	</div>
+			    	<div class="col-sm-4" ng-class="!a.validaContrasena == true ? 'has-error' : 'has-success'">					    
+				    	<label>Confirmar Contraseña *</label>
+				    	<input type="password" class="form-control" placeholder="Confirmar Contraseña" 
+				    	ng-model="ma.marca.confirmarContrasena" 
+				    	ng-disabled="ma.cambiarPassword"
+				    	ng-change="ma.validarContrasena(ma.marca.password, ma.marca.confirmarContrasena)">
+				    	<div class="note note-success" ng-if="!ma.validaContrasena == true && ma.marca.confirmarContrasena.length > 0">Las contraseñas no coinciden.</div>
+		  			</div>
+		  		</div>
+		  	</div>
 				<div class="row">
 					<div class="col-sm-12">
 						<input type="submit" ng-click="ma.guardar(ma.marca,form)" value="Guardar" class="btn btn-primary" ng-show="ma.action" valida-form formulario="form">

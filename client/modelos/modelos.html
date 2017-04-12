@@ -14,12 +14,6 @@
 				      <input type="file" id="imagen" name="imagen" ng-model="ma.modelo.imagen"/>
 				    </div>
 				    <div class="col-sm-3" valida>
-					    <label>Marca *</label>
-				    	<select class="form-control" ng-model="m.modelo.marca_id" required name="marca">
-					    	<option value="{{marca._id}}" ng-repeat="marca in m.marcas">{{marca.nombre}}</option>
-				    	</select>
-				    </div>
-				    <div class="col-sm-3" valida>
 					    <label>Nombre *</label>
 				    	<input name="nombre" type="text" class="form-control" placeholder="Nombre del carro" ng-model="m.modelo.nombre" required="">
 				    </div>

@@ -37,3 +37,7 @@ Meteor.publish("coordinadores", function(options){
 Meteor.publish("recepcionistas", function(options){
 	return Meteor.users.find(options)
 });
+
+Meteor.publish("usuarioAgencia", function(){
+	return Roles.getUsersInRole( ['agencia'] );
+});

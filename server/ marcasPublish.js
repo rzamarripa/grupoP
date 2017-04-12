@@ -7,6 +7,7 @@ Meteor.publish("agencias", function(options){
 });
 
 Meteor.publish("modelos", function(options){
+	console.log(options);
 	return Modelos.find(options);
 });
 

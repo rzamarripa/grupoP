@@ -1,37 +1,39 @@
 Meteor.methods({
-/*
   createUsuario: function (usuario, rol) {
-  	usuario.contrasena = Math.random().toString(36).substring(2,7);
+	  console.log(usuario, rol);
+  	//usuario.contrasena = Math.random().toString(36).substring(2,7);
 	  profile = {
-				email: usuario.correo,
-				nombre: usuario.nombre,
-				apellidos: usuario.apPaterno + " " + usuario.apMaterno,
-				nombreCompleto : usuario.nombre  + " " + usuario.apPaterno + " " + (usuario.apMaterno ? usuario.apMaterno : ""),
-				fotografia : usuario.fotografia,
-				sexo : usuario.sexo,
-				estatus:true,
-				campus_id : usuario.campus_id,
-				seccion_id : usuario.seccion_id
-			}
-		if(usuario.maestro_id != undefined)
-			profile.maestro_id = usuario.maestro_id;
+			correo : usuario.correo,
+			nombreUsuario : usuario.usuario,
+			estatus : true,
+			ciudad : usuario.ciudad,
+			nombreAgencia : usuario.nombre,
+			contrasena : usuario.password,
+			estado : usuario.estado,
+			direccion : usuario.direccion,
+			descripcion : usuario.descripcion,
+			telefono : usuario.telefono,
+			agencia_id : usuario.agencia_id,
+			marca_id : usuario.marca_id
+		}
 		
 		var usuario_id = Accounts.createUser({
-			username: usuario.nombreUsuario,
-			password: usuario.contrasena,
+			username: usuario.usuario,
+			password: usuario.password,
 			profile: profile
 		});
 		
 		Roles.addUsersToRoles(usuario_id, rol);
+/*
 		Meteor.call('sendEmail',
-			profile.email,
-			'sistema@casserole.edu.mx',
-			'Bienvenido a Casserole',
-			'Usuario: '+ usuario.nombreUsuario + ' contraseña: '+ usuario.contrasena
+			profile.correo,
+			'sistema@masoft.mx',
+			'Bienvenido al Sistema Comparativo',
+			'Usuario: '+ usuario.usuario + ' contraseña: '+ usuario.password
 		);
+*/
 		return usuario_id;
 	},
-*/
 	sendEmail: function (to, from, subject, text) {
 		console.log(to,from,subject, text);
     this.unblock();
@@ -49,6 +51,7 @@ Meteor.methods({
 	    throw new Meteor.Error(403, "Usted no tiene permiso para entrar a " + vista);
 	  }
 	},
+/*
 	createUsuario: function (usuario, rol) {
 		console.log(usuario);
 		usuario.contrasena = Math.random().toString(36).substring(2,7);
@@ -70,6 +73,7 @@ Meteor.methods({
 		);
 		return usuario_id;
 	},
+*/
 	updateUsuario: function (usuario, rol) {		
 		var user = Meteor.users.findOne(usuario._id);
 	  Meteor.users.update({_id: user._id}, {$set:{
