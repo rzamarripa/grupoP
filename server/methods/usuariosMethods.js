@@ -13,7 +13,6 @@ Meteor.methods({
 			direccion : usuario.direccion,
 			descripcion : usuario.descripcion,
 			telefono : usuario.telefono,
-			agencia_id : usuario.agencia_id,
 			marca_id : usuario.marca_id
 		}
 		
@@ -51,33 +50,12 @@ Meteor.methods({
 	    throw new Meteor.Error(403, "Usted no tiene permiso para entrar a " + vista);
 	  }
 	},
-/*
-	createUsuario: function (usuario, rol) {
-		console.log(usuario);
-		usuario.contrasena = Math.random().toString(36).substring(2,7);
-		usuario.profile.pwd = usuario.contrasena;
-	  usuario.profile.friends = [];
-	  console.log(usuario);
-		var usuario_id = Accounts.createUser({
-			username: usuario.username,
-			password: usuario.contrasena,			
-			profile: usuario.profile
-		});
-		
-		Roles.addUsersToRoles(usuario_id, rol);
-		Meteor.call('sendEmail',
-			usuario.profile.correo,
-			'sistema@corazonvioleta.mx',
-			'Bienvenido a Corazón de Violeta',
-			'Usuario: '+ usuario.username + ' contraseña: ' + usuario.contrasena
-		);
-		return usuario_id;
-	},
-*/
-	updateUsuario: function (usuario, rol) {		
-		var user = Meteor.users.findOne(usuario._id);
+	updateUsuario: function (usuario, marca_id, rol) {
+		console.log(usuario, marca_id, rol);
+		var user = Meteor.users.findOne({"profile.marca_id" : marca_id});
+		console.log(user);
 	  Meteor.users.update({_id: user._id}, {$set:{
-			username: usuario.username,
+			username: usuario.usuario,
 			roles: [rol],
 			profile: usuario.profile
 		}});

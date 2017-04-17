@@ -78,6 +78,7 @@ angular.module("casserole")
 		delete marca._id;		
 		marca.usuarioActualizo_id = Meteor.userId(); 
 		Marcas.update({_id:idTemp},{$set:marca});
+		
 		Meteor.call('updateUsuario', marca, idTemp, 'marca');
 		toastr.success('Actualizado correctamente.');
 		$('.collapse').collapse('hide');
