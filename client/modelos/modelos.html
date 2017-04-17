@@ -10,16 +10,25 @@
 		  	<div class="well">	    
 			    <div class="row">
 				    <div class="col-sm-2">
-					    <label>Imagen</label>
-				      <input type="file" id="imagen" name="imagen" ng-model="ma.modelo.imagen"/>
+					    <img src="{{m.modelo.imagen}}" width="100">
 				    </div>
-				    <div class="col-sm-3" valida>
+				    <div class="col-sm-2">
+					    <label>Imagen</label>
+				      <input type="file" id="imagen" name="imagen" ng-model="m.modelo.imagen"/>
+				    </div>
+				    <div class="col-sm-2" valida>
 					    <label>Nombre *</label>
 				    	<input name="nombre" type="text" class="form-control" placeholder="Nombre del carro" ng-model="m.modelo.nombre" required="">
 				    </div>
-				    <div class="col-sm-3" valida>
+				    <div class="col-sm-2" valida>
 					    <label>Año *</label>
 				    	<input name="anio" type="text" class="form-control" placeholder="Año" ng-model="m.modelo.anio" required="">
+				    </div>
+				    <div class="col-sm-2" valida>
+					    <label>Tipo de Vehículo *</label>
+				    	<select class="form-control" ng-model="m.modelo.tipoVehiculo_id" required name="tipoVehiculo">
+					    	<option value="{{tipoVehiculo._id}}" ng-repeat="tipoVehiculo in m.tiposVehiculos">{{tipoVehiculo.nombre}}</option>
+				    	</select>
 				    </div>
 					</div>
 				</div>

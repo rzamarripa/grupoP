@@ -8,7 +8,7 @@ angular.module("casserole")
   this.cambiarPassword = false;
   window.rc = rc;
   
-  this.subscribe('usuariosAgencia',()=>{
+  this.subscribe('usuariosMarcas',()=>{
 		return [{}]
 	});
  
@@ -33,7 +33,17 @@ angular.module("casserole")
   this.guardar = function(marca,form)
 	{
 		if(form.$invalid){
-      toastr.error('Error al guardar los datos.');
+      toastr.error('Error al guardar los datos, llene correctamente el formulario');
+      return;
+	  }
+	  
+	  if(this.validaUsuario == false){
+		  toastr.error('Elija un usuario que esté disponible.');
+      return;
+	  }
+	  
+	  if(this.validaContrasena == false){
+		  toastr.error('Las contraseñas no coinciden.');
       return;
 	  }
 	  

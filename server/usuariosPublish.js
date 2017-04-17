@@ -38,6 +38,6 @@ Meteor.publish("recepcionistas", function(options){
 	return Meteor.users.find(options)
 });
 
-Meteor.publish("usuarioAgencia", function(){
-	return Roles.getUsersInRole( ['agencia'] );
+Meteor.publish("usuariosMarcas", function(){
+	return Roles.getUsersInRole( ['marca'] );
 });

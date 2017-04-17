@@ -25,21 +25,24 @@
 				</div>
 				<div class="well">
 		  		<div class="row">
-			  		<div class="col-sm-4" ng-class="!ma.validaContrasena == true ? 'has-error' : 'has-success'">					    
+			  		<div class="col-sm-4" ng-class="!ma.validaUsuario == true && ma.marca.usuario.length > 0 ? 'has-error' : 'has-success'">					    
 				    	<label>Usuario *</label>
 				    	<input type="text" class="form-control" placeholder="Usuario" 
 				    	ng-model="ma.marca.usuario" 
 				    	ng-disabled="ma.cambiarPassword"
 				    	ng-change="ma.validarUsuario(ma.marca.usuario)">
+				    	<div class="note note-success" ng-if="!ma.validaUsuario == true && ma.marca.usuario.length > 0">Este usuario ya se está usando.</div>
+				    	<div class="note note-success" ng-if="!ma.validaUsuario == false && ma.marca.usuario.length > 0">Usuario disponible.</div>
+				    	<div class="note note-success" ng-if="ma.marca.usuario.length == 0">Usuario no puede estar en blanco.</div>
 			    	</div>
-			    	<div class="col-sm-4" ng-class="!ma.validaContrasena == true ? 'has-error' : 'has-success'">					    
+			    	<div class="col-sm-4" ng-class="!ma.validarContrasena == true ? 'has-error' : 'has-success'">					    
 				    	<label>Contraseña *</label>
 				    	<input type="password" class="form-control" placeholder="Contraseña" 
 				    	ng-model="ma.marca.password" 
 				    	ng-disabled="ma.cambiarPassword"
 				    	ng-change="ma.validarContrasena(ma.marca.password, ma.marca.confirmarContrasena)">
 			    	</div>
-			    	<div class="col-sm-4" ng-class="!a.validaContrasena == true ? 'has-error' : 'has-success'">					    
+			    	<div class="col-sm-4" ng-class="!a.validarContrasena == true ? 'has-error' : 'has-success'">					    
 				    	<label>Confirmar Contraseña *</label>
 				    	<input type="password" class="form-control" placeholder="Confirmar Contraseña" 
 				    	ng-model="ma.marca.confirmarContrasena" 

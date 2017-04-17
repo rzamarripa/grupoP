@@ -5,12 +5,17 @@ angular.module("casserole")
   
   this.action = true;
   this.nuevo = true;
+  window.rc = rc;
   
 	this.subscribe('modelos',() => {
 		return [{marca_id : Meteor.user() ? Meteor.user().profile.marca_id : ""}];
 	});
 	
 	this.subscribe('marcas',() => {
+		return [{estatus : true}]
+	});
+	
+	this.subscribe('tiposVehiculos',() => {
 		return [{estatus : true}]
 	});
   
@@ -26,6 +31,9 @@ angular.module("casserole")
 			  })
 		  }
 		  return modelos;
+	  },
+	  tiposVehiculos : () => {
+		  return TiposVehiculos.find();
 	  }
   });
   
@@ -34,7 +42,7 @@ angular.module("casserole")
     this.nuevo = !this.nuevo;
     this.modelo = {};		
     $('#imagen').val("");
-  };
+  }; 
   
   this.guardar = function(modelo,form){
 		if(form.$invalid){

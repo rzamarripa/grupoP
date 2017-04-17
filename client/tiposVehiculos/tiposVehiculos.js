@@ -8,99 +8,65 @@ angular.module("casserole")
  	});
  	
  	this.helpers({
-	 	tipos : () => {
+	 	tiposVehiculos : () => {
 		 	return TiposVehiculos.find();
 	 	}
  	});
- 	
- 	
-/*
   
   this.action = true;
   this.nuevo = true;
-  this.ciudades = [];
+  this.tiposVehiculos = [];
+  this.tipoVehiculo = {};
   window.rc = rc;
   
-	this.subscribe('agencias',()=>{
+	this.subscribe('tipoVehiculos',()=>{
 		return [{}]
 	});
-	
-	this.subscribe('estados',()=>{
-		return [{}]
-	});
-	
-	this.subscribe('ciudades',()=>{
-		return [{}]
-	});
-	 
-	this.subscribe('marcas',()=>{
-		return [{estatus : true}]
-	});
-
-	this.helpers({
-		agencias : () => {
-			var agencias = Agencias.find().fetch();
-			if(agencias){
-				_.each(agencias, function(agencia){
-					agencia.ciudad_id = parseInt(agencia.ciudad_id);
-					agencia.marca = Marcas.findOne(agencia.marca_id);
-				})
-			}
-			return agencias;
-		},
-	  marcas : () => {
-		  return Marcas.find();
-	  },
-	  estados : () => {
-		  return Estados.find();
-	  }
-  });
   
-  this.nuevaAgencia = function()
+  this.nuevoTipoVehiculo = function()
   {
     this.action = true;
     this.nuevo = !this.nuevo;
-    this.agencia = {};		
+    this.tipoVehiculo = {};		
   };
   
-  this.guardar = function(agencia,form)
+  this.guardar = function(tipoVehiculo,form)
 	{
 		if(form.$invalid){
       toastr.error('Error al guardar los datos.');
       return;
 	  }
-		agencia.estatus = true;
+		tipoVehiculo.estatus = true;
 		
-		agencia.usuarioInserto_id = Meteor.userId();
-		console.log(agencia);
+		tipoVehiculo.usuarioInserto_id = Meteor.userId();
+		console.log(tipoVehiculo);
 
-		var agencia_id = Agencias.insert(agencia);
-		agencia.agencia_id = agencia_id;
-
+		TiposVehiculos.insert(tipoVehiculo);
+		
 		toastr.success('Guardado correctamente.');
-		this.agencia = {}; 
+		this.tipoVehiculo = {}; 
 		$('.collapse').collapse('hide');
 		this.nuevo = true;
 	};
 	
 	this.editar = function(id)
 	{
-    this.agencia = Agencias.findOne({_id:id});
+    this.tipoVehiculo = TiposVehiculos.findOne({_id:id});
     this.action = false;
     $('.collapse').collapse('show');
     this.nuevo = false;
 	};
 	
-	this.actualizar = function(agencia,form)
+	this.actualizar = function(tipoVehiculo,form)
 	{
 		if(form.$invalid){
-      toastr.error('Error al actualizar los datos de la agencia.');
+      toastr.error('Error al actualizar los datos de la tipoVehiculo.');
       return;
 	  }
-		var idTemp = agencia._id;
-		delete agencia._id;		
-		agencia.usuarioActualizo_id = Meteor.userId(); 
-		Agencias.update({_id:idTemp},{$set:agencia});
+		var idTemp = tipoVehiculo._id;
+		delete tipoVehiculo._id;		
+		tipoVehiculo.usuarioActualizo_id = Meteor.userId(); 
+		TiposVehiculos.update({_id:idTemp},{$set:tipoVehiculo});
 		
 		toastr.success('Actualizado correctamente.');
 		$('.collapse').collapse('hide');
@@ -109,19 +75,13 @@ angular.module("casserole")
 	
 	this.cambiarEstatus = function(id)
 	{
-		var agencia = Agencias.findOne({_id:id});
-		if(agencia.estatus == true)
-			agencia.estatus = false;
+		var tipoVehiculo = TiposVehiculos.findOne({_id:id});
+		if(tipoVehiculo.estatus == true)
+			tipoVehiculo.estatus = false;
 		else
-			agencia.estatus = true;
+			tipoVehiculo.estatus = true;
 		
-		Agencias.update({_id: id},{$set :  {estatus : agencia.estatus}});
+		TiposVehiculos.update({_id: id},{$set :  {estatus : tipoVehiculo.estatus}});
   };
   
-  this.getCiudades = function(estado_id){
-	  console.log(estado_id);
-	  rc.ciudades = Ciudades.find({estado_id : parseInt(estado_id)}).fetch();
-  }
-	
-*/
 };

@@ -1,14 +1,43 @@
+<h2>Tipos de Vehículos</h2>
+<div class="row">
+	<div class="col-sm-12">
+		<a class="btn btn-{{t.nuevo == true ? 'primary' : 'danger'}}" role="button" data-toggle="collapse" 
+			href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" ng-click="t.nuevoTipoVehiculo()">
+		  {{t.nuevo == true ? 'Nuevo' : 'Cancelar'}}
+		</a>
+		<div class="collapse" id="collapseExample">
+			<form name="form" class="form-horizontal" role="form" novalidate>
+		  	<div class="well">	    
+			    <div class="row">
+				    <div class="col-sm-3" valida>
+					    <label>Nombre *</label>
+				    	<input name="nombre" type="text" class="form-control" placeholder="Nombre" ng-model="t.tipoVehiculo.nombre" required="">
+				    </div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<input type="submit" ng-click="t.guardar(t.tipoVehiculo,form)" value="Guardar" class="btn btn-primary" ng-show="a.action" valida-form formulario="form">
+						<input type="submit" ng-click="t.actualizar(t.tipoVehiculo,form)" value="Actualizar" class="btn btn-primary" ng-show="!a.action" valida-form formulario="form">				
+					</div>
+				</div>	  
+		  </form>
+		</div>
+	</div>
+</div>
+<br/>
+<!-- List -->
 <div class="row">
 	<div class="col-sm-12">
 		<table class="table table-bordered">
 			<tr>
-				<th>No.</th>
+				<th width="10%">No.</th>
 				<th>Nombre</th>
-				<th>Acciones</th>
+				<th width="20%">Acciones</th>
 			</tr>
-			<tr ng-repeat="tipo in t.tipos">
+			<tr ng-repeat="tipoVehiculo in t.tiposVehiculos">
 				<td>{{$index + 1}}</td>
-				<td>{{tipo.nombre}}</td>
+				<td>{{tipoVehiculo.nombre}}</td>
 				<td>
 					<div class="text-center">
 				    <div class="btn-group">
@@ -17,9 +46,9 @@
 						    <span class="sr-only">Toggle Dropdown</span>
 						  </button>
 						  <ul class="dropdown-menu text-left">
-						    <li><a href="#" ng-click="a.editar(agencia._id)"><i class="fa fa-pencil"></i> Editar</a></li>
-						    <li><a href="#" ng-click="a.cambiarEstatus(agencia._id)">
-						    				<i class="fa fa-{{agencia.estatus ? 'trash' : 'check' }}"></i> {{agencia.estatus ? "Desactivar" : "Activar" }}
+						    <li><a href="#" ng-click="t.editar(tipoVehiculo._id)"><i class="fa fa-pencil"></i> Editar</a></li>
+						    <li><a href="#" ng-click="t.cambiarEstatus(tipoVehiculo._id)">
+						    				<i class="fa fa-{{tipoVehiculo.estatus ? 'trash' : 'check' }}"></i> {{tipoVehiculo.estatus ? "Desactivar" : "Activar" }}
 						    		</a>
 						    </li>
 						  </ul>
