@@ -1,7 +1,20 @@
 angular.module("casserole")
-.controller("AgenciasCtrl", AgenciasCtrl);  
- function AgenciasCtrl($scope, $meteor, $reactive, $state, $stateParams, toastr){
+.controller("TiposVehiculosCtrl", TiposVehiculosCtrl);  
+ function TiposVehiculosCtrl($scope, $meteor, $reactive, $state, $stateParams, toastr){
  	let rc = $reactive(this).attach($scope);
+ 	
+ 	this.subscribe("tiposVehiculos", () => {
+	 	return [{}]
+ 	});
+ 	
+ 	this.helpers({
+	 	tipos : () => {
+		 	return TiposVehiculos.find();
+	 	}
+ 	});
+ 	
+ 	
+/*
   
   this.action = true;
   this.nuevo = true;
@@ -110,4 +123,5 @@ angular.module("casserole")
 	  rc.ciudades = Ciudades.find({estado_id : parseInt(estado_id)}).fetch();
   }
 	
+*/
 };

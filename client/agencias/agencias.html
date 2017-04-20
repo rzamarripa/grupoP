@@ -41,11 +41,16 @@
 					<div class="row">
 						<div class="col-sm-3" valida>
 							<label>Estado *</label>
-							<input name="estado" type="text" class="form-control" placeholder="Estado" ng-model="a.agencia.estado" required="">
+							<select name="estado" class="form-control" ng-model="a.agencia.estado_id" ng-change="a.getCiudades(a.agencia.estado_id)">
+								<option value="{{estado._id}}" ng-repeat="estado in a.estados">{{estado.nombre}}</option>
+							</select>
+							
 						</div>
 						<div class="col-sm-3" valida>
 							<label>Ciudad *</label>
-							<input name="ciudad" type="text" class="form-control" placeholder="Ciudad" ng-model="a.agencia.ciudad" required="">
+							<select name="ciudad" class="form-control" ng-model="a.agencia.ciudad_id" >
+								<option value="{{ciudad._id}}" ng-repeat="ciudad in a.ciudades">{{ciudad.nombre}}</option>
+							</select>
 						</div>
 					</div>
 				</div>

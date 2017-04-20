@@ -111,9 +111,12 @@ angular.module("casserole")
 	this.versiones_ids = Array(4).fill(undefined);
 	this.versionesSeleccionadas = Array(4).fill(undefined);
 	this.imagenesSeleccionadas = Array(4).fill(undefined);
+	this.versionSeleccionada = {};
 	this.versionAContactar = {};
 	this.modeloAContactar = {};
+	this.marcaAContactar = {};
 	this.ciudades = [];
+	this.estado_id = "";
 	
 	this.modelos = Array(4).fill([]);
 	this.versiones = Array(4).fill([]);
@@ -145,6 +148,14 @@ angular.module("casserole")
 		return [{estatus : true}]
 	});
 	
+	this.subscribe('estados',()=>{
+		return [{}]
+	});
+	
+	this.subscribe('ciudades',()=>{
+		return [{}]
+	});
+	
   this.subscribe('modelos', ()=>{
 		return [{estatus : true, marca_id : { $in : this.getCollectionReactively("marcas_ids")}}]
 	},{
@@ -160,7 +171,10 @@ angular.module("casserole")
 	this.helpers({
 	  marcas : () => {
 		  return Marcas.find();
-	  }	  
+	  },
+	  estados : () => {
+		  return Estados.find();
+	  }
   });
   
   this.getMarca = function(numero, marca_id){
@@ -196,8 +210,11 @@ angular.module("casserole")
   }
   
   this.mostrarCiudades = function(indice, version){
+	  console.log(indice, version);
 	  rc.versionAContactar = Versiones.findOne(rc.idsSeleccionadas[indice]);
 	  rc.modeloAContactar = Modelos.findOne(rc.versionAContactar.modelo_id);
+	  rc.marcaAContactar = Marcas.findOne(rc.modeloAContactar.marca_id);
+/*
 	  var agencias = Agencias.find({marca_id : rc.versionAContactar.marca_id}).fetch();
 	  rc.ciudades = [];
 	  _.each(agencias, function(agencia){
@@ -206,6 +223,8 @@ angular.module("casserole")
 			  agencia_id : agencia._id
 		  })
 	  });
+*/
+	  
   }
   
   this.enviarEmail = function(formModal, correo){
@@ -217,9 +236,26 @@ angular.module("casserole")
 			$('#formModal')[0].reset();
 	  }
 	  NProgress.start()
-	  var agencia = Agencias.findOne(correo.agencia_id);
-	  var marca = Marcas.findOne(agencia.marca_id);
+	  //var agencia = Agencias.findOne(rc.versionSeleccionada.agencia_id);
+	  var marca = Marcas.findOne(rc.modeloAContactar.marca_id);
 	  var modelo = Modelos.findOne(rc.versionAContactar.modelo_id);
+	  var agencias = Agencias.find().fetch();
+	  var correoAgencia = "";
+	  var existe = false;
+	  _.each(agencias, function(agencia){
+		  if(agencia.ciudad_id == correo.ciudad_id){
+			  existe = true;
+			  rc.agenciaSeleccionada = agencia;
+		  }
+	  })
+	  
+	  if(existe){
+		  rc.agenciaAContactar = Agencias.findOne(rc.agenciaSeleccionada._id);
+	  }else{
+		  console.log()
+		  rc.agenciaAContactar = Agencias.findOne({marca_id : marca._id, default : true});
+	  }
+	  
 	  if(correo.comentario == undefined)
 	  	correo.comentario = "No dejó comentario";
 	  var comentario = 	correo.comentario + "<br/><br/>" +
@@ -232,7 +268,7 @@ angular.module("casserole")
 	  var de = "Clientes <" + correo.correo + ">";
 	  $('#myModal').modal('hide')
 	  Meteor.apply("sendEmail",
-	  	[agencia.correo, 
+	  	[rc.agenciaAContactar.correo, 
 	  	de,
 	  	marca.nombre + "-" + modelo.nombre + "-" + rc.versionAContactar.nombre, 
 	  	comentario], function(error, result){
@@ -245,8 +281,8 @@ angular.module("casserole")
 				  	correo : correo.correo, 
 				  	marca : marca.nombre, 
 				  	marca_id : marca._id,
-				  	agencia : agencia.nombre,
-				  	agencia_id : agencia._id,
+				  	agencia : rc.agenciaAContactar.nombre,
+				  	agencia_id : rc.agenciaAContactar._id,
 				  	modelo : modelo.nombre,
 				  	modelo_id : modelo._id,
 				  	version : rc.versionAContactar.nombre,
@@ -262,4 +298,10 @@ angular.module("casserole")
 	  	});
 	  	rc.correo = {};
   }
+  
+  this.estadoSeleccionado = function(estado_id){
+	  console.log(estado_id);
+	  rc.ciudades = Ciudades.find({estado_id : parseInt(estado_id)}).fetch();
+  }
+  
 };

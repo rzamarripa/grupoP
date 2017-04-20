@@ -197,10 +197,44 @@ angular.module('casserole').config(['$injector', function ($injector) {
       }
 */
     })
+    .state('anon.principal', {
+      url: '/principal',
+      templateUrl: 'client/principal/principal.html',
+      controller: 'PrincipalCtrl as p',
+/*
+      resolve: {
+        "currentUser": ["$meteor", "toastr", function($meteor, toastr){
+          return $meteor.requireValidUser(function(user) {
+            if(user.roles[0] == "gerente" || user.roles[0] == "admin"){
+              return true;
+            }else{
+              return 'UNAUTHORIZED'; 
+            }           
+         });
+       }]
+      }
+*/
+    })
     .state('root.bitacora', {
       url: '/bitacora',
       templateUrl: 'client/bitacora/bitacora.html',
       controller: 'BitacoraCtrl as bita',
+      resolve: {
+        "currentUser": ["$meteor", "toastr", function($meteor, toastr){
+          return $meteor.requireValidUser(function(user) {
+            if(user.roles[0] == "gerente" || user.roles[0] == "admin"){
+              return true;
+            }else{
+              return 'UNAUTHORIZED'; 
+            }           
+         });
+       }]
+      }
+    })
+    .state('root.tiposVehiculos', { 
+      url: '/tiposVehiculos',
+      templateUrl: 'client/tiposVehiculos/tiposVehiculos.html',
+      controller: 'TiposVehiculosCtrl as t',
       resolve: {
         "currentUser": ["$meteor", "toastr", function($meteor, toastr){
           return $meteor.requireValidUser(function(user) {
