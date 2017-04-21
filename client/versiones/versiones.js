@@ -175,6 +175,16 @@ angular.module("casserole")
 		
 		Versiones.update({_id: id},{$set :  {estatus : version.estatus}});
   };
+  
+  this.duplicar = function(version_id){
+	  var versionNueva = Versiones.findOne(version_id);
+	  delete versionNueva._id;
+	  this.version = versionNueva;
+	  $('.collapse').collapse('show');
+	  $("html, body").animate({ scrollTop: 0 }, "slow");
+	  this.nuevo = true;
+		return false;
+  }
 	
 };
 

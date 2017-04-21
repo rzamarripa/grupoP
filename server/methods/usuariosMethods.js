@@ -56,8 +56,8 @@ Meteor.methods({
 		console.log(user);
 	  Meteor.users.update({_id: user._id}, {$set:{
 			username: usuario.usuario,
-			roles: [rol],
-			profile: usuario.profile
+			roles: [rol]
+			//profile: usuario.profile
 		}});
 		
 		Accounts.setPassword(user._id, usuario.password, {logout: false});		

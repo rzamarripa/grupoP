@@ -551,6 +551,7 @@
 							  </button>
 							  <ul class="dropdown-menu text-left">
 							    <li><a href="#" ng-click="v.editar(version._id)"><i class="fa fa-pencil"></i> Editar</a></li>
+							    <li><a href="#" ng-click="v.duplicar(version._id)"><i class="fa fa-object-group"></i> Duplicar</a></li>
 							    <li><a href="#" ng-click="v.cambiarEstatus(version._id)">
 							    				<i class="fa fa-{{version.estatus ? 'trash' : 'check' }}"></i> {{version.estatus ? "Desactivar" : "Activar" }}
 							    		</a>
