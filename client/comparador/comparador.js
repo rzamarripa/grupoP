@@ -170,7 +170,7 @@ angular.module("casserole")
 	
 	this.helpers({
 	  marcas : () => {
-		  return Marcas.find();
+		  return Marcas.find({},{sort : {nombre : 1}});
 	  },
 	  estados : () => {
 		  return Estados.find();

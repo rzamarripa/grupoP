@@ -6,6 +6,7 @@ angular.module("casserole")
   this.action = true;
   this.nuevo = true;
   this.version = {};
+  this.scroll = 0;
   window.rc = rc;
   
   this.subscribe('modelos',()=>{
@@ -147,6 +148,8 @@ angular.module("casserole")
     this.version = Versiones.findOne({_id:id});
     this.action = false;
     $('.collapse').collapse('show');
+    rc.scroll = $(window).scrollTop();
+    $("html, body").animate({ scrollTop: 0 }, "slow");
     this.nuevo = false;
 	};
 	
@@ -162,6 +165,7 @@ angular.module("casserole")
 		Versiones.update({_id:idTemp},{$set:version});
 		toastr.success('Actualizado correctamente.');
 		$('.collapse').collapse('hide');
+		$("html, body").animate({ scrollTop: rc.scroll }, "slow");
 		this.nuevo = true;
 	};
 

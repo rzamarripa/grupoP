@@ -26,7 +26,7 @@ angular.module("casserole")
   this.nuevoTipoVehiculo = function()
   {
     this.action = true;
-    this.nuevo = this.nuevo;
+    this.nuevo = !this.nuevo;
     this.tipoVehiculo = {};		
   };
   

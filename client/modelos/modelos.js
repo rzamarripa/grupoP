@@ -6,6 +6,7 @@ angular.module("casserole")
   this.action = true;
   this.nuevo = true;
   window.rc = rc;
+  this.scroll = 0;
   
 	this.subscribe('modelos',() => {
 		return [{marca_id : Meteor.user() ? Meteor.user().profile.marca_id : ""}];
@@ -63,6 +64,8 @@ angular.module("casserole")
     this.modelo = Modelos.findOne({_id:id});
     this.action = false;
     $('.collapse').collapse('show');
+		rc.scroll = $(window).scrollTop();
+    $("html, body").animate({ scrollTop: 0 }, "slow");
     this.nuevo = false;
 	};
 	
@@ -77,6 +80,7 @@ angular.module("casserole")
 		Modelos.update({_id:idTemp},{$set:modelo});
 		toastr.success('Actualizado correctamente.');
 		$('.collapse').collapse('hide');
+		$("html, body").animate({ scrollTop: rc.scroll }, "slow");
 		this.nuevo = true;
 	};
 
