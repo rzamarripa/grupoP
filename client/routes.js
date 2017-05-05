@@ -37,7 +37,8 @@ angular.module('casserole').config(['$injector', function ($injector) {
     .state('anon', {
       url: '',
       abstract: true,
-      template: '<ui-view/>'
+      templateUrl: 'client/layouts/publico.html',
+      //template: '<ui-view/>'
     })
     
     .state('anon.login', {

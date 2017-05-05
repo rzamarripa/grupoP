@@ -1,8 +1,10 @@
+<!--
 <div class="row">
 	<div class="col-sm-8 col-sm-offset-2 text-center">
 		<h2>Comparador</h2>
 	</div>
 </div>
+-->
 
 <div class="well">
 <!--
@@ -14,8 +16,8 @@
 	</div>
 -->
 	<div class="row" id="scrollingDiv">
-		<div class="col-sm-4" style="width: 300px;"></div>
-		<div class="col-sm-2" style="width: 200px;" id="indice" ng-repeat="indice in [0,1,2,3]">
+		<div class="col-sm-4" style="width: 250px;"></div>
+		<div class="col-sm-2" style="width: 170px;" id="indice" ng-repeat="indice in [0,1,2,3]">
 			<img class="thumbnail" style="width: 100% !important; height: 100% !important" src="/img/minisuv.png" ng-show="!c.imagenesSeleccionadas[indice]">
 			<img class="thumbnail" style="width: 100% !important; height: 100% !important" src="{{c.imagenesSeleccionadas[indice]}}" ng-show="c.imagenesSeleccionadas[indice]">
 			<select  ng-options="marca._id as marca.nombre for marca in c.marcas" class="form-control" placeholder="Seleccione" ng-model="c.marcas_ids[indice]" ng-change="c.getMarca(indice, c.marcas_ids[indice])"></select>

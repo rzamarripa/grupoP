@@ -1,13 +1,98 @@
+<div id="page" class="site">
+	<section id="content" class="site-content">
+    <div class="">
+        <div class="product-search-wrapper">
+            <div class="cars-search-tabs" data-example-id="togglable-tabs">
+                <ul class="nav nav-tabs" id="myTabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true" ng-click="p.limpiar()">
+                            MARCA <br> MODELO
+                        </a>
+                    </li>
+                    <li role="presentation" class="">
+                        <a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false"  ng-click="p.limpiar()">
+                            Tipo de <br> Automóvi
+                        </a>
+                    </li>
+                </ul>
+								<div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade active in" role="tabpanel" id="home" aria-labelledby="home-tab">
+                        <form id="product-search">
+
+                            <input type="hidden" id="search" name="search" value="model">
+
+                            <div class="form-group">
+	                            <select class="form-control changeBrand" ng-model="p.seleccion.marca_id" ng-change="p.getModelos(p.seleccion.marca_id)">
+		                            <option value="">Seleccione una marca</option>
+																<option value="{{marca._id}}" ng-repeat="marca in p.marcas">{{marca.nombre}}</option>
+															</select>
+                            </div>
+
+                            <div class="form-group">
+	                            <select class="form-control" ng-model="p.seleccion.modelo_id">
+		                            <option value="">Seleccione un modelo</option>
+																<option value="{{modelo._id}}" ng-repeat="modelo in p.modelos">{{modelo.nombre}}</option>
+															</select>
+                            </div>
+
+                            <div class="">
+                                <button class="btnPrincipal btnPrincipal-primary btn-block" type="submit" ng-click="p.filtrar(p.seleccion.modelo_id)">Buscar</button>
+                                <!--<a href="#" class="btn btn-secondary">Descarga App de Servicio</a>-->
+                            </div>
+                        </form>
+                    </div>
+                    <div class="tab-pane fade" role="tabpanel" id="profile" aria-labelledby="profile-tab">
+                        <form id="product-search">
+
+                            <input type="hidden" id="search" name="search" value="type">
+
+                            <div class="form-group">
+                                <select class="form-control" ng-model="p.seleccion.tipoVehiculo_id">
+			                            <option value="">Seleccione un tipo de vehículo</option>
+																	<option value="{{tipoVehiculo._id}}" ng-repeat="tipoVehiculo in p.tiposVehiculos">{{tipoVehiculo.nombre}}</option>
+																</select>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-lg-3 col-xs-3 price-since">PRECIO DESDE</div>
+
+                                    <div class="col-lg-4 col-xs-3">
+                                        <input type="number" currency-input size="30" class="form-control" placeholder="0.00" ng-model="p.seleccion.precioDesde" id="price_from" name="price_from">
+                                    </div>
+
+                                    <div class="col-lg-1 col-xs-1 price-since">A</div>
+
+                                    <div class="col-lg-4 col-xs-3">
+                                        <input type="text" currency-input size="30" class="form-control" placeholder="0.00" ng-model="p.seleccion.precioHasta" id="price_to" name="price_to">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="">
+                                <button class="btnPrincipal btnPrincipal-primary btn-block" type="submit" ng-click="p.buscarTipoVehiculo(p.seleccion.tipoVehiculo_id, p.seleccion.precioDesde, p.seleccion.precioHasta)">Buscar</button>
+                                <!--<a href="#" class="btn btn-secondary">Descarga App de Servicio</a>-->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- .product-search-wrapper -->
+    </div>
+	</section>
+</div>
+
+<!--
+
 <div class="container well">
 	<div class="row">
 		<div class="col-sm-4">
-		  <!-- Nav tabs -->
+
 		  <ul class="nav nav-tabs" role="tablist">
 		    <li role="presentation" class="active"><a href="#filtrar" aria-controls="home" role="tab" data-toggle="tab">MARCA MODELO</a></li>
 		    <li role="presentation"><a href="#tipoAuto" aria-controls="tipoAuto" role="tab" data-toggle="tab">TIPO DE AUTOMOVIL</a></li>
 		  </ul>
-		
-		  <!-- Tab panes -->
+		  
 		  <div class="tab-content">
 		    <div role="tabpanel" class="tab-pane active" id="filtrar">
 			    <div class="row">
@@ -38,8 +123,9 @@
 		  </div>
 	  </div>
 	</div>
+-->
 	
-	
+<div id="page1" class="site" ng-show="p.versiones.length > 0">
 	<div ng-show="p.versiones.length > 0">
 		<span class="lead">Resultados</span>
 		<hr>
@@ -56,12 +142,18 @@
 							<div class=""  style="padding: -1px 30px 30px !important">
 								<h5 class="name">
 									<a href="#">
-										{{version.nombre}} <span>Categoría</span>
+										{{version.modelo.nombre}} <span>{{version.nombre}}</span>
 									</a>
 								</h5>
 								<p class="price-container">
 									<span>{{version.precioSugerido | currency}}</span>
 								</p>
+								<div class="form-controls">
+<!-- 									<button class="btn btn-primary btn-xs btn-block">Contactar agencia</button> -->
+									<button type="button" class="btn btn-primary btn-xs btn-block" data-toggle="modal" data-target="#myModal" ng-click="p.mostrarAgencia(version)">
+									  Contactar Agencia
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -70,4 +162,70 @@
 		</div>
 	</div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Contactar a una agencia {{p.marcaAContactar.nombre}}</h4>
+      </div>
+      <div class="modal-body">
+	      <form name="formModal" id="formModal" class="form-horizontal">
+        	<div class="widget-body">
+						<fieldset>
+							<legend>Información del modelo <strong>{{p.modeloAContactar.nombre}}</strong> y versión <strong>{{p.versionAContactar.nombre}}</strong></legend>
+							<div class="form-group" valida>
+								<label class="col-md-3 control-label" for="select-1">Estado *</label>
+								<div class="col-md-9">
+									<select name="estadoCorreo" class="form-control" id="select-1" ng-model="p.correo.estado_id" required="" ng-change="p.estadoSeleccionado(p.correo.estado_id)">
+										<option value=""></option>
+										<option value="{{estado._id}}" ng-repeat="estado in p.estados">{{estado.nombre}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group" valida>
+								<label class="col-md-3 control-label" for="select-1">Ciudad *</label>
+								<div class="col-md-9">
+									<select name="ciudadCorreo" class="form-control" id="select-1" ng-model="p.correo.ciudad_id" required="">
+										<option value=""></option>
+										<option value="{{ciudad._id}}" ng-repeat="ciudad in p.ciudades">{{ciudad.nombre | capitalize}}</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group" valida>
+								<label class="col-md-3 control-label" for="select-1">Nombre *</label>
+								<div class="col-md-9">
+									<input name="nombreCorreo" type="text" class="form-control" placeholder="Nombre" ng-model="p.correo.nombre" required=""/>
+								</div>
+							</div>
+							<div class="form-group" valida>
+								<label class="col-md-3 control-label" for="select-1">Teléfono *</label>
+								<div class="col-md-9">
+									<input name="telefonoCorreo" type="text" class="form-control" placeholder="Teléfono" ng-model="p.correo.telefono" required=""/>
+								</div>
+							</div>
+							<div class="form-group" valida>
+								<label class="col-md-3 control-label" for="select-1">Correo *</label>
+								<div class="col-md-9">
+									<input name="correoCorreo" type="email" class="form-control" placeholder="Correo" ng-model="p.correo.correo" required=""/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-3 control-label" for="select-1">Comentario</label>
+								<div class="col-md-9">
+									<textarea role="3" type="text" class="form-control" placeholder="Escriba su comentario" ng-model="p.correo.comentario"></textarea>
+								</div>
+							</div>
+							
+						</fieldset>
+					</div>
+				</div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	        <button type="button" class="btn btn-primary" ng-click="p.enviarEmail(formModal, p.correo)" valida-form formulario="formModal">Enviar</button>
+	      </div>
+      </form>
+    </div>
+  </div>
 </div>

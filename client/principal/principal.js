@@ -6,6 +6,11 @@ angular.module("casserole")
   this.modelos = [];
   this.versiones = [];
 	this.numero = 0;
+	this.versionAContactar = {};
+	this.modeloAContactar = {};
+	this.marcaAContactar = {};
+	this.agenciaSeleccionada = {};
+	this.ciudades = [];
 	window.rc = rc;
   
   this.subscribe('marcas',()=>{
@@ -13,6 +18,10 @@ angular.module("casserole")
 	});
 	
 	this.subscribe('agencias',()=>{
+		return [{estatus : true}]
+	});
+	
+	this.subscribe('tiposVehiculos',()=>{
 		return [{estatus : true}]
 	});
 	
@@ -28,9 +37,23 @@ angular.module("casserole")
 		onReady : this.modeloActualizar
 	});
 	
+	this.subscribe('estados',()=>{
+		return [{}]
+	});
+	
+	this.subscribe('ciudades',()=>{
+		return [{}]
+	});
+	
 	this.helpers({
 	  marcas : () => {
 		  return Marcas.find();
+	  },
+	  tiposVehiculos : () =>{
+		  return TiposVehiculos.find();
+	  },
+	  estados : () => {
+		  return Estados.find();
 	  }
   });
   
@@ -45,23 +68,6 @@ angular.module("casserole")
 	 })
   }
   
-  this.comparar = function(){
-	  this.comparando = true;
-  }
-  
-  this.mostrarCiudades = function(indice, version){
-	  rc.versionAContactar = Versiones.findOne(rc.idsSeleccionadas[indice]);
-	  rc.modeloAContactar = Modelos.findOne(rc.versionAContactar.modelo_id);
-	  var agencias = Agencias.find({marca_id : rc.versionAContactar.marca_id}).fetch();
-	  rc.ciudades = [];
-	  _.each(agencias, function(agencia){
-		  rc.ciudades.push({
-			  nombre : agencia.ciudad,
-			  agencia_id : agencia._id
-		  })
-	  });
-  }
-  
   this.enviarEmail = function(formModal, correo){
 	  
 	  if(formModal.$invalid){
@@ -71,14 +77,28 @@ angular.module("casserole")
 			$('#formModal')[0].reset();
 	  }
 	  NProgress.start()
-	  var agencia = Agencias.findOne(correo.agencia_id);
-	  var marca = Marcas.findOne(agencia.marca_id);
-	  var modelo = Modelos.findOne(rc.versionAContactar.modelo_id);
+	  var agencias = Agencias.find().fetch();
+	  var correoAgencia = "";
+	  var existe = false;
+	  _.each(agencias, function(agencia){
+		  if(agencia.ciudad_id == correo.ciudad_id){
+			  existe = true;
+			  rc.agenciaSeleccionada = agencia;
+		  }
+	  })
+	  
+	  if(existe){
+		  rc.agenciaAContactar = Agencias.findOne(rc.agenciaSeleccionada._id);
+	  }else{
+		  console.log()
+		  rc.agenciaAContactar = Agencias.findOne({marca_id : rc.marcaAContactar._id, default : true});
+	  }
+
 	  if(correo.comentario == undefined)
 	  	correo.comentario = "No dejó comentario";
 	  var comentario = 	correo.comentario + "<br/><br/>" +
-	  									"<strong>Marca:</strong> " + marca.nombre + "<br/>" +
-	  									"<strong>Modelo:</strong> " + modelo.nombre + "<br/>" +
+	  									"<strong>Marca:</strong> " + rc.marcaAContactar.nombre + "<br/>" +
+	  									"<strong>Modelo:</strong> " + rc.modeloAContactar.nombre + "<br/>" +
 	  									"<strong>Versión:</strong> " + rc.versionAContactar.nombre + "<br/><br/>" +
 	  									"<strong>" + correo.nombre + "</strong><br/>" +
 	  									"<strong>Teléfono:</strong> " + correo.telefono + "<br/>" +
@@ -86,10 +106,9 @@ angular.module("casserole")
 	  var de = "Clientes <" + correo.correo + ">";
 	  $('#myModal').modal('hide')
 	  Meteor.apply("sendEmail",
-	  	[agencia.correo, 
+	  	[rc.agenciaAContactar.correo, 
 	  	de,
-	  	marca.nombre + "-" + modelo.nombre + "-" + rc.versionAContactar.nombre, 
-	  	comentario], function(error, result){
+	  	rc.marcaAContactar.nombre + "-" + rc.modeloAContactar.nombre + "-" + rc.versionAContactar.nombre, comentario], function(error, result){
 		  	NProgress.set(0.4) 
 		  	if(result){
 			  	NProgress.done();
@@ -97,12 +116,12 @@ angular.module("casserole")
 				  	nombre : correo.nombre, 
 				  	telefono : correo.telefono, 
 				  	correo : correo.correo, 
-				  	marca : marca.nombre, 
-				  	marca_id : marca._id,
-				  	agencia : agencia.nombre,
-				  	agencia_id : agencia._id,
-				  	modelo : modelo.nombre,
-				  	modelo_id : modelo._id,
+				  	marca : rc.marcaAContactar.nombre, 
+				  	marca_id : rc.marcaAContactar._id,
+				  	agencia : rc.agenciaAContactar.nombre,
+				  	agencia_id : rc.agenciaAContactar._id,
+				  	modelo : rc.modeloAContactar.nombre,
+				  	modelo_id : rc.modeloAContactar._id,
 				  	version : rc.versionAContactar.nombre,
 				  	version_id : rc.versionAContactar._id,
 				  	fecha : new Date(),
@@ -115,5 +134,34 @@ angular.module("casserole")
 				}
 	  	});
 	  	rc.correo = {};
+  }
+  
+  this.buscarTipoVehiculo = function(tipoVehiculo_id, precioDesde, precioHasta){
+	  console.log(precioDesde, precioHasta);
+	  precioDesde = parseFloat(precioDesde) || 0;
+	  precioHasta = parseFloat(precioHasta) || 9999999999999;
+	  rc.modelos = Modelos.find({tipoVehiculo_id : tipoVehiculo_id},{fields : {_id : 1}}).fetch();
+	  console.log(precioDesde, precioHasta);
+	  var modelos_id = _.pluck(rc.modelos, "_id");
+	  rc.versiones = Versiones.find({modelo_id : { $in : modelos_id}, precioSugerido : { $gte : precioDesde, $lt : precioHasta}}).fetch();
+	  _.each(rc.versiones, function(version){
+		  version.modelo = Modelos.findOne({_id : version.modelo_id});
+	  });
+  }
+  
+  this.mostrarAgencia = function(version){
+	  console.log(version);
+	  rc.versionAContactar = Versiones.findOne(version._id);
+	  rc.modeloAContactar = Modelos.findOne(version.modelo_id);
+	  rc.marcaAContactar = Marcas.findOne(version.marca_id);
+  }
+  
+  this.estadoSeleccionado = function(estado_id){
+	  console.log(estado_id);
+	  rc.ciudades = Ciudades.find({estado_id : parseInt(estado_id)}).fetch();
+  }
+  
+  this.limpiar = function(){
+	  rc.versiones = [];
   }
 };
