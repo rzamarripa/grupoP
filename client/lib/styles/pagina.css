@@ -1375,3 +1375,9 @@ a:focus {
         padding: 8% 8%;
     }
 }
+.product-search-wrapper-principal{
+	width: 100%;
+  background: #ac1f2d;
+  border-bottom: 3px solid #961b27;
+  padding: 0;
+}

@@ -11,6 +11,7 @@ angular.module("casserole")
 	this.marcaAContactar = {};
 	this.agenciaSeleccionada = {};
 	this.ciudades = [];
+	$('#bannerCarrusel').load('http://www.grupo-premier.com.mx#owl');
 	window.rc = rc;
   
   this.subscribe('marcas',()=>{
