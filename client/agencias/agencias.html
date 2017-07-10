@@ -1,13 +1,13 @@
 <h2>Agencias</h2>
 <div class="row">
 	<div class="col-sm-12">
-		<a class="btn btn-{{a.nuevo == true ? 'primary' : 'danger'}}" role="button" data-toggle="collapse" 
+		<a class="btn btn-{{a.nuevo == true ? 'primary' : 'danger'}}" role="button" data-toggle="collapse"
 			href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" ng-click="a.nuevaAgencia()">
 		  {{a.nuevo == true ? 'Nuevo' : 'Cancelar'}}
 		</a>
 		<div class="collapse" id="collapseExample">
 			<form name="form" class="form-horizontal" role="form" novalidate>
-		  	<div class="well">	    
+		  	<div class="well">
 			    <div class="row">
 				    <div class="col-sm-3" valida>
 					    <label>Marca *</label>
@@ -27,7 +27,8 @@
 					<div class="row">
 				    <div class="col-sm-3" valida>
 					    <label>Correo *</label>
-				    	<input name="correo" type="email" class="form-control" placeholder="Correo" ng-model="a.agencia.correo" required="">
+				    	<input name="correo" type="text" class="form-control" placeholder="Correo" ng-model="a.agencia.correo" required="">
+				    	<p class="note"><strong>Nota:</strong> Para reenviar a varios correos sepárelos con una coma ",".</p>
 				    </div>
 				    <div class="col-sm-3" valida>
 					    <label>Teléfono *</label>
@@ -44,7 +45,7 @@
 							<select name="estado" class="form-control" ng-model="a.agencia.estado_id" ng-change="a.getCiudades(a.agencia.estado_id)">
 								<option value="{{estado._id}}" ng-repeat="estado in a.estados">{{estado.nombre}}</option>
 							</select>
-							
+
 						</div>
 						<div class="col-sm-3" valida>
 							<label>Ciudad *</label>
@@ -57,9 +58,9 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<input type="submit" ng-click="a.guardar(a.agencia,form)" value="Guardar" class="btn btn-primary" ng-show="a.action" valida-form formulario="form">
-						<input type="submit" ng-click="a.actualizar(a.agencia,form)" value="Actualizar" class="btn btn-primary" ng-show="!a.action" valida-form formulario="form">				
+						<input type="submit" ng-click="a.actualizar(a.agencia,form)" value="Actualizar" class="btn btn-primary" ng-show="!a.action" valida-form formulario="form">
 					</div>
-				</div>	  
+				</div>
 		  </form>
 		</div>
 	</div>
@@ -122,7 +123,7 @@
 							    </li>
 							  </ul>
 							</div>
-				    </div>				    
+				    </div>
 			    </td>
 		    </tr>
 			</tbody>

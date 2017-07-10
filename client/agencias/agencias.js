@@ -1,25 +1,25 @@
 angular.module("casserole")
-.controller("AgenciasCtrl", AgenciasCtrl);  
+.controller("AgenciasCtrl", AgenciasCtrl);
  function AgenciasCtrl($scope, $meteor, $reactive, $state, $stateParams, toastr){
  	let rc = $reactive(this).attach($scope);
-  
+
   this.action = true;
   this.nuevo = true;
   this.ciudades = [];
   window.rc = rc;
-  
+
 	this.subscribe('agencias',()=>{
 		return [{}]
 	});
-	
+
 	this.subscribe('estados',()=>{
 		return [{}]
 	});
-	
+
 	this.subscribe('ciudades',()=>{
 		return [{}]
 	});
-	 
+
 	this.subscribe('marcas',()=>{
 		return [{estatus : true}]
 	});
@@ -42,14 +42,14 @@ angular.module("casserole")
 		  return Estados.find();
 	  }
   });
-  
+
   this.nuevaAgencia = function()
   {
     this.action = true;
     this.nuevo = !this.nuevo;
-    this.agencia = {};		
+    this.agencia = {};
   };
-  
+
   this.guardar = function(agencia,form)
 	{
 		if(form.$invalid){
@@ -57,7 +57,7 @@ angular.module("casserole")
       return;
 	  }
 		agencia.estatus = true;
-		
+		//agencia.correosEnvio = agencia.correo.split(",");
 		agencia.usuarioInserto_id = Meteor.userId();
 		console.log(agencia);
 
@@ -65,11 +65,11 @@ angular.module("casserole")
 		agencia.agencia_id = agencia_id;
 
 		toastr.success('Guardado correctamente.');
-		this.agencia = {}; 
+		this.agencia = {};
 		$('.collapse').collapse('hide');
 		this.nuevo = true;
 	};
-	
+
 	this.editar = function(id)
 	{
     this.agencia = Agencias.findOne({_id:id});
@@ -77,7 +77,7 @@ angular.module("casserole")
     $('.collapse').collapse('show');
     this.nuevo = false;
 	};
-	
+
 	this.actualizar = function(agencia,form)
 	{
 		if(form.$invalid){
@@ -85,15 +85,16 @@ angular.module("casserole")
       return;
 	  }
 		var idTemp = agencia._id;
-		delete agencia._id;		
-		agencia.usuarioActualizo_id = Meteor.userId(); 
+		delete agencia._id;
+		agencia.usuarioActualizo_id = Meteor.userId();
+		//agencia.correosEnvio = agencia.correo.split(",");
 		Agencias.update({_id:idTemp},{$set:agencia});
-		
+
 		toastr.success('Actualizado correctamente.');
 		$('.collapse').collapse('hide');
 		this.nuevo = true;
 	};
-	
+
 	this.cambiarEstatus = function(id)
 	{
 		var agencia = Agencias.findOne({_id:id});
@@ -101,13 +102,13 @@ angular.module("casserole")
 			agencia.estatus = false;
 		else
 			agencia.estatus = true;
-		
+
 		Agencias.update({_id: id},{$set :  {estatus : agencia.estatus}});
   };
-  
+
   this.getCiudades = function(estado_id){
 	  console.log(estado_id);
 	  rc.ciudades = Ciudades.find({estado_id : parseInt(estado_id)}).fetch();
   }
-	
+
 };
