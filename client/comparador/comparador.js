@@ -2,13 +2,13 @@ angular.module("casserole")
 .controller("ComparadorCtrl", ComparadorCtrl);
  function ComparadorCtrl($scope, $meteor, $reactive, $state, $stateParams, toastr){
  	let rc = $reactive(this).attach($scope);
-  
+
   var $scrollingDiv = $("#scrollingDiv");
 	var $listaComparativa = $("#listaComparativa");
-	$(window).scroll(function(){     
+	$(window).scroll(function(){
 		if ($(window).scrollTop()>50){
     	$scrollingDiv
-				.css("position",'fixed' )  
+				.css("position",'fixed' )
 				.css("top",'0px' )
 				.css("background-color", "white")
 				.css("z-index", 1)
@@ -16,14 +16,14 @@ angular.module("casserole")
 				.css("padding-bottom", "3px");
 		} else {
 			$scrollingDiv
-      	.css("position",'' )    
+      	.css("position",'' )
         .css("top",'' )
         .css("background-color", "")
         .css("border-bottom", "")
         .css("padding-bottom", "");
 		}
 	});
-        
+
   this.action = true;
   this.nuevo = true;
   this.comparando = false;
@@ -103,7 +103,7 @@ angular.module("casserole")
 	  "Interfaz bluetooth",
 	  "Sistema de navegación",
 	  "Pantalla en tablero",
-	  "Reproducción de audio vía bluetooth"	  
+	  "Reproducción de audio vía bluetooth"
   ];
   this.idsSeleccionadas = Array(4).fill(undefined);
   this.marcas_ids = Array(4).fill(undefined);
@@ -117,7 +117,7 @@ angular.module("casserole")
 	this.marcaAContactar = {};
 	this.ciudades = [];
 	this.estado_id = "";
-	
+
 	this.modelos = Array(4).fill([]);
 	this.versiones = Array(4).fill([]);
 	this.marcaActualizar = function(){
@@ -139,35 +139,35 @@ angular.module("casserole")
 
 	this.numero = 0;
 	window.rc = rc;
-  
+
   this.subscribe('marcas',()=>{
 		return [{estatus : true}]
 	});
-	
+
 	this.subscribe('agencias',()=>{
 		return [{estatus : true}]
 	});
-	
+
 	this.subscribe('estados',()=>{
 		return [{}]
 	});
-	
+
 	this.subscribe('ciudades',()=>{
 		return [{}]
 	});
-	
+
   this.subscribe('modelos', ()=>{
 		return [{estatus : true, marca_id : { $in : this.getCollectionReactively("marcas_ids")}}]
 	},{
 		onReady : this.marcaActualizar
 	});
-  
+
 	this.subscribe('versiones',()=>{
 		return [{estatus : true, modelo_id : { $in : this.getCollectionReactively("modelos_ids")}}]
 	},{
 		onReady : this.modeloActualizar
 	});
-	
+
 	this.helpers({
 	  marcas : () => {
 		  return Marcas.find({},{sort : {nombre : 1}});
@@ -176,19 +176,19 @@ angular.module("casserole")
 		  return Estados.find();
 	  }
   });
-  
+
   this.getMarca = function(numero, marca_id){
 	  this.marcas_ids[numero] = marca_id;
-	  this.numero = numero;	  
+	  this.numero = numero;
   }
-  
+
   this.getModelos = function(numero, modelo_id){
 	  var modelo = Modelos.findOne(modelo_id);
 	  this.modelos_ids[numero] = modelo_id;
 	  this.imagenesSeleccionadas[numero] = modelo.imagen;
 	  this.numero = numero;
   }
-  
+
   this.getVersiones = function(numero, version_id){
 	  this.versiones_ids[numero] = version_id;
 	  var versionActual = Versiones.findOne(version_id);
@@ -201,14 +201,14 @@ angular.module("casserole")
 		  delete versionActual.usuarioActualizo_id;
 		  delete versionActual.estatus;
 		  this.versionesSeleccionadas[numero] = versionActual;
-		  
-	  }	  
+
+	  }
   }
-  
+
   this.comparar = function(){
 	  this.comparando = true;
   }
-  
+
   this.mostrarCiudades = function(indice, version){
 	  console.log(indice, version);
 	  rc.versionAContactar = Versiones.findOne(rc.idsSeleccionadas[indice]);
@@ -224,11 +224,11 @@ angular.module("casserole")
 		  })
 	  });
 */
-	  
+
   }
-  
+
   this.enviarEmail = function(formModal, correo){
-	  
+
 	  if(formModal.$invalid){
       toastr.error('Los campos rojos no pueden ir vacíos y debe ser un correo válido.');
       return;
@@ -248,14 +248,14 @@ angular.module("casserole")
 			  rc.agenciaSeleccionada = agencia;
 		  }
 	  })
-	  
+
 	  if(existe){
 		  rc.agenciaAContactar = Agencias.findOne(rc.agenciaSeleccionada._id);
 	  }else{
 		  console.log()
 		  rc.agenciaAContactar = Agencias.findOne({marca_id : marca._id, default : true});
 	  }
-	  
+
 	  if(correo.comentario == undefined)
 	  	correo.comentario = "No dejó comentario";
 	  var comentario = 	correo.comentario + "<br/><br/>" +
@@ -268,18 +268,18 @@ angular.module("casserole")
 	  var de = "Clientes <" + correo.correo + ">";
 	  $('#myModal').modal('hide')
 	  Meteor.apply("sendEmail",
-	  	[rc.agenciaAContactar.correo, 
+	  	[rc.agenciaAContactar.correo,
 	  	de,
-	  	marca.nombre + "-" + modelo.nombre + "-" + rc.versionAContactar.nombre, 
+	  	"Lead Comparador",
 	  	comentario], function(error, result){
-		  	NProgress.set(0.4) 
+		  	NProgress.set(0.4)
 		  	if(result){
 			  	NProgress.done();
 			  	BitacoraCorreos.insert({
-				  	nombre : correo.nombre, 
-				  	telefono : correo.telefono, 
-				  	correo : correo.correo, 
-				  	marca : marca.nombre, 
+				  	nombre : correo.nombre,
+				  	telefono : correo.telefono,
+				  	correo : correo.correo,
+				  	marca : marca.nombre,
 				  	marca_id : marca._id,
 				  	agencia : rc.agenciaAContactar.nombre,
 				  	agencia_id : rc.agenciaAContactar._id,
@@ -293,15 +293,15 @@ angular.module("casserole")
 				  	dia : moment().date(),
 				  	anio : moment().year(),
 				  	diaSemana :moment().isoWeekday()});
-			  	toastr.success("Gracias por contactarnos, nosotros nos pondremos en contacto lo antes posible.") 
+			  	toastr.success("Gracias por contactarnos, nosotros nos pondremos en contacto lo antes posible.")
 				}
 	  	});
 	  	rc.correo = {};
   }
-  
+
   this.estadoSeleccionado = function(estado_id){
 	  console.log(estado_id);
 	  rc.ciudades = Ciudades.find({estado_id : parseInt(estado_id)}).fetch();
   }
-  
+
 };

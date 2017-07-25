@@ -15,13 +15,13 @@ Meteor.methods({
 			telefono : usuario.telefono,
 			marca_id : usuario.marca_id
 		}
-		
+
 		var usuario_id = Accounts.createUser({
 			username: usuario.usuario,
 			password: usuario.password,
 			profile: profile
 		});
-		
+
 		Roles.addUsersToRoles(usuario_id, rol);
 /*
 		Meteor.call('sendEmail',
@@ -41,7 +41,7 @@ Meteor.methods({
       subject: subject,
       html: text
     });
-    
+
     return true;
   },
 	userIsInRole: function(usuario, rol, grupo, vista){
@@ -58,10 +58,10 @@ Meteor.methods({
 			roles: [rol]
 			//profile: usuario.profile
 		}});
-		
-		Accounts.setPassword(user._id, usuario.password, {logout: false});		
+
+		Accounts.setPassword(user._id, usuario.password, {logout: false});
 	},
-	updateGerente: function (usuario, rol) {		
+	updateGerente: function (usuario, rol) {
 		var usuarioViejo = Meteor.users.findOne({"profile.sucursal_id" : usuario.profile.sucursal_id});
 		var idTemp = usuarioViejo._id;
 	  Meteor.users.update({_id: idTemp}, {$set:{
@@ -69,19 +69,19 @@ Meteor.methods({
 			roles: [rol],
 			profile: usuario.profile
 		}});
-		
-		Accounts.setPassword(idTemp, usuario.password, {logout: false});		
+
+		Accounts.setPassword(idTemp, usuario.password, {logout: false});
 	},
 	buscarClientes : function(options){
 		if(options.where.nombreCompleto.length > 0){
 			var semanaActual = moment().isoWeek();
-			
+
 			let selector = {
 		  	"profile.nombreCompleto": { '$regex' : '.*' + options.where.nombreCompleto || '' + '.*', '$options' : 'i' },
 		  	roles : ["cliente"]
 			}
-			
-			var clientes = Meteor.users.find(selector, options.options).fetch();	
+
+			var clientes = Meteor.users.find(selector, options.options).fetch();
 			_.each(clientes, function(cliente){
 				cliente.profile.region = Regiones.findOne(cliente.profile.region_id);
 				cliente.profile.sucursal = Sucursales.findOne(cliente.profile.sucursal_id);
@@ -90,14 +90,14 @@ Meteor.methods({
 		return clientes;
 	},
 	cambiarEstatusCliente : function(cliente_id, estatus, classLabel, estatusNombre, sucursal_id){
-		
+
 		var cliente = Meteor.users.findOne({ _id : cliente_id});
 		var diaSemana = moment().isoWeekday();
 		var dia = moment().date();
 		var semana = moment().isoWeek();
 		var mes = moment().month() + 1;
 		var anio = moment().year();
-		
+
 		BitacoraEstatus.insert({cliente_id : cliente_id, estatusAnterior : parseInt(cliente.profile.estatus), estatusActual : parseInt(estatus), fechaCreacion : new Date(), diaSemana : diaSemana, dia : dia, semana : semana, mes : mes, anio : anio, sucursal_id : sucursal_id });
 		Meteor.users.update({_id : cliente_id}, {$set : {"profile.semanaEstatus " : moment().isoWeek(), "profile.estatus" : estatus, "profile.estatusObj.classLabel" : classLabel, "profile.estatusObj.nombre" : estatusNombre, "profile.estatusObj.codigo" : estatus}});
 		return obtenerEstatusNombre(estatus);
@@ -114,23 +114,23 @@ Meteor.methods({
 		return bitacoras;
 	},
 	getCantClientesPorEstatus : function(fechaInicio, fechaFin, estatus, seccion_id){
-		
+
 		var bitacoras = BitacoraEstatus.find({fechaCreacion : { $gte : fechaInicio, $lt : fechaFin}, seccion_id : seccion_id}).fetch();
-		
+
 		fechaInicio = moment(fechaInicio);
 		fechaFin = moment(fechaFin);
-		
+
 		var semanas = [];
 		while (fechaFin > fechaInicio) {
 		   semanas.push(fechaInicio.isoWeek());
 		   fechaInicio = fechaInicio.day(8);
 		}
-		
+
 		var elementos = [];
 		for(i = 0; i < semanas.length; i++){
 			elementos.push(0);
 		}
-		
+
 		var cantBitacoras = {};
 		if(bitacoras.length > 0){
 			_.each(bitacoras, function(bitacora){
@@ -147,7 +147,7 @@ Meteor.methods({
 		}
 
 		cantBitacoras = _.toArray(cantBitacoras);
-		
+
 		return [semanas, cantBitacoras, bitacoras];
 
 	}
@@ -172,7 +172,7 @@ function obtenerEstatusNombre(estatus){
   }else if(estatus == 8){
 	  var estatusNombre = "Egresado";
   }
-  
+
   return estatusNombre;
 }
 
