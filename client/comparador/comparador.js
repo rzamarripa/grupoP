@@ -239,7 +239,7 @@ angular.module("casserole")
 	  //var agencia = Agencias.findOne(rc.versionSeleccionada.agencia_id);
 	  var marca = Marcas.findOne(rc.modeloAContactar.marca_id);
 	  var modelo = Modelos.findOne(rc.versionAContactar.modelo_id);
-	  var agencias = Agencias.find().fetch();
+	  var agencias = Agencias.find({marca_id : marca._id}).fetch();
 	  var correoAgencia = "";
 	  var existe = false;
 	  _.each(agencias, function(agencia){
