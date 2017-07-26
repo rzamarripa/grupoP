@@ -53,6 +53,10 @@
 								<option value="{{ciudad._id}}" ng-repeat="ciudad in a.ciudades">{{ciudad.nombre}}</option>
 							</select>
 						</div>
+						<div class="col-sm-3">
+							<label>Principal *</label>
+							<input type="checkbox" ng-model="a.agencia.default">
+						</div>
 					</div>
 				</div>
 				<div class="row">
