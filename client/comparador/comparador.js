@@ -242,17 +242,17 @@ angular.module("casserole")
 	  var agencias = Agencias.find({marca_id : marca._id}).fetch();
 	  var correoAgencia = "";
 	  var existe = false;
+
 	  _.each(agencias, function(agencia){
 		  if(agencia.ciudad_id == correo.ciudad_id){
 			  existe = true;
 			  rc.agenciaSeleccionada = agencia;
 		  }
-	  })
+	  });
 
 	  if(existe){
 		  rc.agenciaAContactar = Agencias.findOne(rc.agenciaSeleccionada._id);
 	  }else{
-		  console.log()
 		  rc.agenciaAContactar = Agencias.findOne({marca_id : marca._id, default : true});
 	  }
 
@@ -265,14 +265,16 @@ angular.module("casserole")
 	  									"<strong>" + correo.nombre + "</strong><br/>" +
 	  									"<strong>Teléfono:</strong> " + correo.telefono + "<br/>" +
 	  									"<strong>Correo:</strong> " + correo.correo + "<br/>";
+
 	  var de = "Clientes <" + correo.correo + ">";
-	  $('#myModal').modal('hide')
+	  $('#myModal').modal('hide');
+
 	  Meteor.apply("sendEmail",
 	  	[rc.agenciaAContactar.correo,
 	  	de,
 	  	"Lead Comparador",
 	  	comentario], function(error, result){
-		  	NProgress.set(0.4)
+		  	NProgress.set(0.4);
 		  	if(result){
 			  	NProgress.done();
 			  	BitacoraCorreos.insert({
