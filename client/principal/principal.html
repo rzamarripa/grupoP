@@ -1,91 +1,85 @@
 <div id="page" class="site">
 	<section id="content" class="site-content">
     <div class="row">
-	    <div class="col-sm-4">
+	    <div class="col-sm-12">
         <div class="product-search-wrapper" style="width: 100% !important">
             <div class="cars-search-tabs" data-example-id="togglable-tabs">
                 <ul class="nav nav-tabs" id="myTabs" role="tablist">
                   <li role="presentation" class="active">
                       <a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true" ng-click="p.limpiar()">
-                          MARCA <br> MODELO
+                          MARCA MODELO
                       </a>
                   </li>
                   <li role="presentation" class="">
                       <a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false"  ng-click="p.limpiar()">
-                          TIPO DE <br> AUTOMÓVIL
+                          TIPO DE AUTOMÓVIL
                       </a>
                   </li>
                 </ul>
 								<div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade active in" role="tabpanel" id="home" aria-labelledby="home-tab">
-                        <form id="product-search">
+                  <div class="tab-pane fade active in" role="tabpanel" id="home" aria-labelledby="home-tab">
+                    <form id="product-search" class="form-inline">
+											<div class="row">
+                        <input type="hidden" id="search" name="search" value="model">
 
-                            <input type="hidden" id="search" name="search" value="model">
+                        <div class="form-group col-sm-6">
+                          <label class="price-since">MARCA</label>
+                          <select class="form-control changeBrand" ng-model="p.seleccion.marca_id" ng-change="p.getModelos(p.seleccion.marca_id)">
+                            <option value="">Seleccione</option>
+														<option value="{{marca._id}}" ng-repeat="marca in p.marcas">{{marca.nombre}}</option>
+													</select>
+                        </div>
 
-                            <div class="form-group">
-	                            <select class="form-control changeBrand" ng-model="p.seleccion.marca_id" ng-change="p.getModelos(p.seleccion.marca_id)">
-		                            <option value="">Seleccione una marca</option>
-																<option value="{{marca._id}}" ng-repeat="marca in p.marcas">{{marca.nombre}}</option>
-															</select>
-                            </div>
-
-                            <div class="form-group">
-	                            <select class="form-control" ng-model="p.seleccion.modelo_id">
-		                            <option value="">Seleccione un modelo</option>
-																<option value="{{modelo._id}}" ng-repeat="modelo in p.modelos">{{modelo.nombre}}</option>
-															</select>
-                            </div>
-
-                            <div class="">
-                                <button class="btnPrincipal btnPrincipal-primary btn-block" type="submit" ng-click="p.filtrar(p.seleccion.modelo_id)">Buscar</button>
-                                <!--<a href="#" class="btn btn-secondary">Descarga App de Servicio</a>-->
-                            </div>
-                        </form>
-                    </div>
-                    <div class="tab-pane fade" role="tabpanel" id="profile" aria-labelledby="profile-tab">
-                        <form id="product-search">
-
-                            <input type="hidden" id="search" name="search" value="type">
-
-                            <div class="form-group">
-                                <select class="form-control" ng-model="p.seleccion.tipoVehiculo_id">
-			                            <option value="">Seleccione un tipo de vehículo</option>
-																	<option value="{{tipoVehiculo._id}}" ng-repeat="tipoVehiculo in p.tiposVehiculos">{{tipoVehiculo.nombre}}</option>
-																</select>
-                            </div>
-
-                            <div class="form-group">
-                              <div class="row">
-                                <div class="col-lg-3 col-xs-3 price-since">PRECIO DESDE</div>
-                                <div class="col-lg-4 col-xs-9">
-                                	<input type="text" currency-input class="form-control" placeholder="0.00" ng-model="p.seleccion.precioDesde" id="price_from" name="price_from">
-                                </div>
-                              </div>
-                            </div>
-
-                            <div class="form-group">
-	                            <div class="row">
-		                            <div class="col-lg-3 col-xs-3 price-since">A</div><br/>
-	                              <div class="col-lg-4 col-xs-9">
-	                                <input type="text" currency-input class="form-control" placeholder="0.00" ng-model="p.seleccion.precioHasta" id="price_to" name="price_to">
-                              	</div>
-	                            </div>
-                            </div>
-
-                            <div class="">
-                                <button class="btnPrincipal btnPrincipal-primary btn-block" type="submit" ng-click="p.buscarTipoVehiculo(p.seleccion.tipoVehiculo_id, p.seleccion.precioDesde, p.seleccion.precioHasta)">Buscar</button>
-                                <!--<a href="#" class="btn btn-secondary">Descarga App de Servicio</a>-->
-                            </div>
-                        </form>
-                    </div>
+                        <div class="form-group col-sm-6">
+                          <label class="price-since">MODELO</label>
+                          <select class="form-control" ng-model="p.seleccion.modelo_id">
+                            <option value="">Seleccione</option>
+														<option value="{{modelo._id}}" ng-repeat="modelo in p.modelos">{{modelo.nombre}}</option>
+													</select>
+                        </div>
+												<br/>
+                        <div class="" style="margin-right: 19px; margin-top: 20px;">
+                            <button class="btnPrincipal btnPrincipal-primary pull-right" type="submit" ng-click="p.filtrar(p.seleccion.modelo_id)">Buscar</button>
+                        </div>
+											</div>
+                    </form>
+                  </div>
+                  <div class="tab-pane fade" role="tabpanel" id="profile" aria-labelledby="profile-tab">
+                    <form id="product-search form-inline">
+	                    <div class="row">
+	                      <div class="form-group col-sm-4">
+	                        <label class="price-since">TIPO DE VEHÍCULO</label>
+	                        <select class="form-control" ng-model="p.seleccion.tipoVehiculo_id">
+	                          <option value="">Seleccione</option>
+														<option value="{{tipoVehiculo._id}}" ng-repeat="tipoVehiculo in p.tiposVehiculos">{{tipoVehiculo.nombre}}</option>
+													</select>
+	                      </div>
+	                      <div class="form-group col-sm-4">
+	                        <label class="price-since">PRECIO DESDE</label>
+	                        	<input type="text" currency-input class="form-control" placeholder="0.00" ng-model="p.seleccion.precioDesde" id="price_from" name="price_from">
+	                      </div>
+	                      <div class="form-group col-sm-4">
+	                        <label class="price-since">A</label>
+	                        <input type="text" currency-input class="form-control" placeholder="0.00" ng-model="p.seleccion.precioHasta" id="price_to" name="price_to">
+	                      </div>
+	                      <br/>
+	                      <div class="" style="margin-right: 19px; margin-top: 20px;">
+	                        <button class="btnPrincipal btnPrincipal-primary pull-right" type="submit" ng-click="p.buscarTipoVehiculo(p.seleccion.tipoVehiculo_id, p.seleccion.precioDesde, p.seleccion.precioHasta)">Buscar</button>
+	                      </div>
+	                    </div>
+                    </form>
+                  </div>
                 </div>
             </div>
         </div> <!-- .product-search-wrapper -->
 	    </div>
+
+<!--
 	    <div class="col-sm-8">
 		    <iframe id="bannerCarrusel" src="http://www.grupo-premier.com.mx/#owl"
 		    name="banner" width="100%" marginwidth="0" height="320" marginheight="0" align="top" scrolling="No"  hspace="0" vspace="0"></iframe>
 	    </div>
+-->
     </div>
 	</section>
 </div>

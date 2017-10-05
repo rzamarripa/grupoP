@@ -275,7 +275,7 @@ a:focus {
     color: #FFF;
     font-weight: 500;
     font-size: 1.2em;
-    line-height: 1.2;
+    line-height: 3.2;
     border: none;
     text-transform: uppercase;
     background: #65121a;
@@ -286,7 +286,7 @@ a:focus {
     background: #ac1f2d;
 }
 
-.site-content .product-search-wrapper .tab-content {padding: 6%;}
+.site-content .product-search-wrapper .tab-content {padding: 3%;}
 .site-content .product-search-wrapper .price-since {
     color: #FFF;
     font-weight: 800;
