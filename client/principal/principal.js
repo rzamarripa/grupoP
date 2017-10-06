@@ -12,8 +12,6 @@ angular.module("casserole")
 	this.agenciaSeleccionada = {};
 	this.ciudades = [];
 
-	window.rc = rc;
-
   this.subscribe('marcas',()=>{
 		return [{estatus : true}]
 	});
@@ -105,28 +103,9 @@ angular.module("casserole")
 	  									"<strong>Correo:</strong> " + correo.correo + "<br/>";
 	  var de = "Clientes <" + correo.correo + ">";
 
-	  console.log(comentario);
 	  $('#myModal').modal('hide')
 
-	  console.log({
-				  	nombre : correo.nombre,
-				  	telefono : correo.telefono,
-				  	correo : correo.correo,
-				  	marca : rc.marcaAContactar.nombre,
-				  	marca_id : rc.marcaAContactar._id,
-				  	agencia : rc.agenciaAContactar.nombre,
-				  	agencia_id : rc.agenciaAContactar._id,
-				  	modelo : rc.modeloAContactar.nombre,
-				  	modelo_id : rc.modeloAContactar._id,
-				  	version : rc.versionAContactar.nombre,
-				  	version_id : rc.versionAContactar._id,
-				  	fecha : new Date(),
-				  	semana : moment().isoWeek(),
-				  	mes : moment().month() + 1,
-				  	dia : moment().date(),
-				  	anio : moment().year(),
-				  	diaSemana :moment().isoWeekday()})
-	  /*Meteor.apply("sendEmail",
+	  Meteor.apply("sendEmail",
 	  	[rc.agenciaAContactar.correo,
 	  	de,
 	  	rc.marcaAContactar.nombre + "-" + rc.modeloAContactar.nombre + "-" + rc.versionAContactar.nombre, comentario], function(error, result){
@@ -153,26 +132,19 @@ angular.module("casserole")
 				  	diaSemana :moment().isoWeekday()});
 			  	toastr.success("Gracias por contactarnos, nosotros nos pondremos en contacto lo antes posible.")
 				}
-	  	});*/
+	  	});
 	  	rc.correo = {};
   }
 
   this.buscarTipoVehiculo = function(tipoVehiculo_id, precioDesde, precioHasta){
 	  var precioDesde = $("#price_from").val();
 	  var precioHasta = $("#price_to").val();
-	  console.log(precioDesde.replace(/,/g, ''), precioHasta.replace(/,/g, ''));
-
-	  console.log(precioDesde.replace(/,/g, ''), precioHasta.replace(/,/g, ''));
 	  precioDesde = precioDesde.replace(/,/g, '') || 0;
 	  precioHasta = precioHasta.replace(/,/g, '') || 9999999999999;
 	  rc.modelos = Modelos.find({tipoVehiculo_id : tipoVehiculo_id},{fields : {_id : 1}}).fetch();
-	  console.log("antes", precioDesde.replace(/,/g, ''), precioHasta.replace(/,/g, ''));
 	  var modelos_id = _.pluck(rc.modelos, "_id");
-	  console.log(modelos_id);
 	  var query = {modelo_id : { $in : modelos_id}, precioSugerido : { $gte :parseInt(precioDesde), $lt : parseInt(precioHasta)}};
-	  console.log(query);
 	  rc.versiones = Versiones.find(query).fetch();
-	  console.log("versiones", rc.versiones.length);
 	  _.each(rc.versiones, function(version){
 		  version.modelo = Modelos.findOne({_id : version.modelo_id});
 	  });
