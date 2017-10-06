@@ -36,7 +36,7 @@ Meteor.methods({
 
 	  if(correo.comentario == undefined)
 	  	correo.comentario = "No dejó comentario";
-		var comentario = 	"Tienes un nuevo contacto de la página por la sección de " + deDonde + ".<br/><br/>" + correo.comentario + "<br/><br/>" + ""
+		var comentario = 	"Tienes un nuevo contacto de la página por la sección de " + deDonde + ".<br/><br/>" + correo.comentario + "<br/><br/>" +
 	  									"<strong>Marca:</strong> " + marcaAContactar.nombre + "<br/>" +
 	  									"<strong>Modelo:</strong> " + modeloAContactar.nombre + "<br/>" +
 	  									"<strong>Versión:</strong> " + versionAContactar.nombre + "<br/><br/>" +
