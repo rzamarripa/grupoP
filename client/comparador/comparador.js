@@ -235,7 +235,7 @@ angular.module("casserole")
 	  }else{
 			$('#formModal')[0].reset();
 	  }
-	  NProgress.start()
+	  NProgress.start();
 	  //var agencia = Agencias.findOne(rc.versionSeleccionada.agencia_id);
 	  var marca = Marcas.findOne(rc.modeloAContactar.marca_id);
 	  var modelo = Modelos.findOne(rc.versionAContactar.modelo_id);
@@ -302,7 +302,6 @@ angular.module("casserole")
   }
 
   this.estadoSeleccionado = function(estado_id){
-	  console.log(estado_id);
 	  rc.ciudades = Ciudades.find({estado_id : parseInt(estado_id)}).fetch();
   }
 

@@ -6,7 +6,6 @@ angular.module('casserole').directive('currencyInput', function() {
 
             return ctrl.$parsers.push(function(inputValue) {
                 var inputVal = element.val();
-								console.log(inputVal);
                 //clearing left side zeros
                 while (inputVal.charAt(0) == '0') {
                     inputVal = inputVal.substr(1);
