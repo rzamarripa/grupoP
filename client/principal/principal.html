@@ -73,59 +73,9 @@
             </div>
         </div> <!-- .product-search-wrapper -->
 	    </div>
-
-<!--
-	    <div class="col-sm-8">
-		    <iframe id="bannerCarrusel" src="http://www.grupo-premier.com.mx/#owl"
-		    name="banner" width="100%" marginwidth="0" height="320" marginheight="0" align="top" scrolling="No"  hspace="0" vspace="0"></iframe>
-	    </div>
--->
     </div>
 	</section>
 </div>
-
-<!--
-
-<div class="container well">
-	<div class="row">
-		<div class="col-sm-4">
-
-		  <ul class="nav nav-tabs" role="tablist">
-		    <li role="presentation" class="active"><a href="#filtrar" aria-controls="home" role="tab" data-toggle="tab">MARCA MODELO</a></li>
-		    <li role="presentation"><a href="#tipoAuto" aria-controls="tipoAuto" role="tab" data-toggle="tab">TIPO DE AUTOMOVIL</a></li>
-		  </ul>
-
-		  <div class="tab-content">
-		    <div role="tabpanel" class="tab-pane active" id="filtrar">
-			    <div class="row">
-						<div class="col-sm-12">
-							<form>
-							  <div class="form-group">
-							    <label for="exampleInputEmail1">Seleccione la marca</label>
-							    <select class="form-control" ng-model="p.seleccion.marca_id" ng-change="p.getModelos(p.seleccion.marca_id)">
-										<option value="{{marca._id}}" ng-repeat="marca in p.marcas">{{marca.nombre}}</option>
-									</select>
-							  </div>
-							  <div class="form-group">
-							    <label for="exampleInputPassword1">Seleccione el modelo </label>
-							    <select class="form-control" ng-model="p.seleccion.modelo_id">
-										<option value="{{modelo._id}}" ng-repeat="modelo in p.modelos">{{modelo.nombre}}</option>
-									</select>
-							  </div>
-							  <button class="btn btn-primary" ng-click="p.filtrar(p.seleccion.modelo_id)">Buscar</button>
-							</form>
-						</div>
-					</div>
-		    </div>
-		    <div role="tabpanel" class="tab-pane" id="tipoAuto">
-			    <select class="form-control">
-				    <option></option>
-			    </select>
-		    </div>
-		  </div>
-	  </div>
-	</div>
--->
 
 <div id="page2" class="site" ng-show="p.versiones.length <= 0">
 	<div >

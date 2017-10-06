@@ -140,10 +140,7 @@ angular.module("casserole")
 	this.numero = 0;
 	window.rc = rc;
 
-  this.subscribe('marcas',()=>{
-		return [{estatus : true}]
-	});
-
+  
 	this.subscribe('agencias',()=>{
 		return [{estatus : true}]
 	});
@@ -169,13 +166,21 @@ angular.module("casserole")
 	});
 
 	this.helpers({
-	  marcas : () => {
-		  return Marcas.find({},{sort : {nombre : 1}});
-	  },
 	  estados : () => {
 		  return Estados.find();
 	  }
   });
+  
+  Meteor.apply("getMarcas", [], function(error, result){
+		if(result){
+			rc.marcas = result;
+			$scope.$apply();
+		}
+
+		if(error){
+			console.log(error);
+		}
+	});
 
   this.getMarca = function(numero, marca_id){
 	  this.marcas_ids[numero] = marca_id;
@@ -194,7 +199,6 @@ angular.module("casserole")
 	  var versionActual = Versiones.findOne(version_id);
 	  if(versionActual._id != undefined){
 		  rc.idsSeleccionadas[numero] = versionActual._id;
-		  delete versionActual._id;
 		  delete versionActual.marca_id;
 		  delete versionActual.modelo_id;
 		  delete versionActual.usuarioInserto_id;
@@ -210,25 +214,51 @@ angular.module("casserole")
   }
 
   this.mostrarCiudades = function(indice, version){
-	  console.log(indice, version);
-	  rc.versionAContactar = Versiones.findOne(rc.idsSeleccionadas[indice]);
-	  rc.modeloAContactar = Modelos.findOne(rc.versionAContactar.modelo_id);
-	  rc.marcaAContactar = Marcas.findOne(rc.modeloAContactar.marca_id);
-/*
-	  var agencias = Agencias.find({marca_id : rc.versionAContactar.marca_id}).fetch();
-	  rc.ciudades = [];
-	  _.each(agencias, function(agencia){
-		  rc.ciudades.push({
-			  nombre : agencia.ciudad,
-			  agencia_id : agencia._id
-		  })
-	  });
-*/
+	  console.log("version", version);
+	  NProgress.start();
+	  Meteor.apply("getVersionModeloMarcaPorTipoVehiculo", [version._id], function(error, result){
+			if(result){
+				rc.versionAContactar = result[0];
+			  rc.modeloAContactar = result[1];
+			  rc.marcaAContactar = result[2];
+			  NProgress.done();
+				$scope.$apply();
+			}
+	
+			if(error){
+				console.log(error);
+			}
+		});
 
   }
 
   this.enviarEmail = function(formModal, correo){
-
+		rc.deDonde = "Comparador";
+		
+		NProgress.start();
+	  if(formModal.$invalid){
+      toastr.error('Los campos rojos no pueden ir vacíos y debe ser un correo válido.');
+      return;
+	  }else{
+			$('#formModal')[0].reset();
+	  }
+	  NProgress.set(0.4);
+	  $('#myModal').modal('hide');
+	  Meteor.apply("enviarEmail", [rc.marcaAContactar, rc.modeloAContactar, rc.versionAContactar, correo, rc.deDonde], function(error, result){
+		  if(result){
+				toastr.success("Gracias por contactarnos, nosotros nos pondremos en contacto lo antes posible.")
+			  NProgress.done();
+		  }
+		  
+		  if(error){
+			  console.log(error);
+		  }
+	  })
+	  
+	  rc.correo = {};
+	  
+/*
+	  
 	  if(formModal.$invalid){
       toastr.error('Los campos rojos no pueden ir vacíos y debe ser un correo válido.');
       return;
@@ -299,6 +329,7 @@ angular.module("casserole")
 				}
 	  	});
 	  	rc.correo = {};
+*/
   }
 
   this.estadoSeleccionado = function(estado_id){

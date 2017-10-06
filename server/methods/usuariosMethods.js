@@ -1,6 +1,5 @@
 Meteor.methods({
   createUsuario: function (usuario, rol) {
-	  console.log(usuario, rol);
   	//usuario.contrasena = Math.random().toString(36).substring(2,7);
 	  profile = {
 			correo : usuario.correo,
@@ -34,7 +33,6 @@ Meteor.methods({
 		return usuario_id;
 	},
 	sendEmail: function (to, from, subject, text) {
-    this.unblock();
     Email.send({
       to: to,
       from: from,
@@ -50,9 +48,7 @@ Meteor.methods({
 	  }
 	},
 	updateUsuario: function (usuario, marca_id, rol) {
-		console.log(usuario, marca_id, rol);
 		var user = Meteor.users.findOne({"profile.marca_id" : marca_id});
-		console.log(user);
 	  Meteor.users.update({_id: user._id}, {$set:{
 			username: usuario.usuario,
 			roles: [rol]

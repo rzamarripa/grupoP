@@ -15,7 +15,7 @@ Meteor.methods({
 				});
 			}
     });
-    
+
     _.each(arreglo, function(arr){
 	    arr.medios = _.toArray(arr.medios);
     });
@@ -40,7 +40,7 @@ Meteor.methods({
 
     return _.toArray(arregloFinal);
   },
-	prospectosSoloEtapaVenta: function (fechaInicial, fechaFinal) {    
+	prospectosSoloEtapaVenta: function (fechaInicial, fechaFinal) {
     var etapasVenta = EtapasVenta.find().fetch();
     var arreglo = {};
     _.each(etapasVenta, function(etapaVenta){
@@ -50,7 +50,7 @@ Meteor.methods({
 				arreglo[etapaVenta.nombre].cantidad = Prospectos.find({"profile.fecha" : {$gte : new Date(fechaInicial.setHours(24)), $lte: new Date(fechaFinal)}, "profile.etapaVenta_id" : etapaVenta._id}).count();
 			}
     });
-    
+
     var arregloFinal = {};
     arregloFinal.etapasVenta = [];
 		arregl = _.toArray(arreglo);
@@ -71,10 +71,10 @@ Meteor.methods({
 		  }else{
 			  query = {usuarioInserto_id : usuario_id, modulo : modulo, seccion_id : seccion_id, fechaPago : {$gte : new Date(fechaInicial), $lt: new Date(fechaFinal.setHours(24))}}
 		  }
-	  }	  
-	  
-		 var otrosPagos = PlanPagos.find(query).fetch(); 
-	  
+	  }
+
+		 var otrosPagos = PlanPagos.find(query).fetch();
+
 	  _.each(otrosPagos, function(pago){
 		  pago.concepto = ConceptosPago.findOne({_id : pago.concepto_id});
 		  pago.alumno = Meteor.users.findOne({_id : pago.alumno_id});
@@ -108,7 +108,7 @@ Meteor.methods({
 					  pago.className = "text-danger";
 				  }else{
 					  arreglo[pago.alumno_id].modificador = 0.00;
-					  arreglo[pago.alumno_id].total = pago.importe;					  
+					  arreglo[pago.alumno_id].total = pago.importe;
 					  total += pago.importe;
 				  }
 				  arreglo[pago.alumno_id].pagos.push(pago);
@@ -117,7 +117,7 @@ Meteor.methods({
 				  arreglo[pago.alumno_id].fechaUltimoPago = ultimoPago.fechaPago;
 				  arreglo[pago.alumno_id].colegiaturaUltimoPago = ultimoPago.semana;
 				  arreglo[pago.alumno_id].deuda = pago.importe;
-				  totalDeuda += pago.importe;				  
+				  totalDeuda += pago.importe;
 			  }else{
 				  if(( diasDiferencia * -1) > pago.diasRecargo){
 					  arreglo[pago.alumno_id].modificador += pago.importeRecargo;
@@ -134,7 +134,7 @@ Meteor.methods({
 				  totalDeuda += pago.importe;
 			  }
 		  });
-		  
+
 		  arreglo = _.toArray(arreglo);
 		  arreglo.push({deuda : totalDeuda, recargos : totalRecargos, total : total});
 		  arreglo = _.sortBy(arreglo, "total");
@@ -158,7 +158,7 @@ Meteor.methods({
 				var inscripcion = Inscripciones.findOne(alumno.inscripcion_id);
 				//Validar que el alumno está activo en su inscripción
 				if(inscripcion != undefined && inscripcion.estatus == 1){
-					//Obtener los pagos atrasados			
+					//Obtener los pagos atrasados
 					var ultimoPago = PlanPagos.findOne({estatus : 1, alumno_id : alumno.alumno_id, modulo : "colegiatura"}, { sort : {fechaPago : -1}});
 					//validar que haya pagado la semana actual
 					if(ultimoPago.semana >= semanaActual && ultimoPago.anio == anioActual ){
@@ -170,12 +170,12 @@ Meteor.methods({
 						}else if(ultimoPago.tipoPlan == "Mensual"){
 							var pago = PlanPagos.findOne({estatus : 0, alumno_id : alumno.alumno_id, semana : ultimoPago.semana + 4, anio : ultimoPago.anio});
 						}
-						
+
 						var tipoColegiatura = pago.tipoPlan;
 						var fechaPago = moment(pago.fecha);
 					  var diasDiferencia = fechaPago.diff(hoy, "days");
 						if(undefined == arreglo[grupo._id]){
-									
+
 						  arreglo[grupo._id] = {};
 						  arreglo[grupo._id].alumnos = {};
 						  arreglo[grupo._id].grupo = grupo;
@@ -185,37 +185,37 @@ Meteor.methods({
 						  arreglo[grupo._id].alumnos[alumno.alumno_id].abono = inscripcion.abono;
 						  arreglo[grupo._id].alumnos[alumno.alumno_id].alumno = Meteor.users.findOne(pago.alumno_id, { fields : { profile : 1}});
 						  arreglo[grupo._id].alumnos[alumno.alumno_id].pagos = [];
-						  
+
 						  if(parseInt(diasDiferencia) <= parseInt(pago.diasDescuento)){
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].modificador = pago.importeDescuento;
 						  }else if(( diasDiferencia * -1) > parseInt(pago.diasRecargo)){
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].modificador = pago.importeRecargo;
 						  }
-						  
+
 							arreglo[grupo._id].alumnos[alumno.alumno_id].pagos.push(pago);
 							arreglo[grupo._id].alumnos[alumno.alumno_id].total = pago.importe;
 						  arreglo[grupo._id].alumnos[alumno.alumno_id].fechaUltimoPago = ultimoPago.fechaPago;
-						  arreglo[grupo._id].alumnos[alumno.alumno_id].colegiaturaUltimoPago = ultimoPago.semana;						
+						  arreglo[grupo._id].alumnos[alumno.alumno_id].colegiaturaUltimoPago = ultimoPago.semana;
 							arreglo[grupo._id].alumnos[alumno.alumno_id].importeColegiatura = pago.importeRegular;
 					  }else{
 						  if(arreglo[grupo._id].alumnos[alumno.alumno_id] == undefined){
-	
+
 							  arreglo[grupo._id].alumnos[alumno.alumno_id] = {};
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].alumno_id = pago.alumno_id;
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].abono = inscripcion.abono;
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].alumno = Meteor.users.findOne(pago.alumno_id, { fields : { profile : 1}});
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].pagos = [];
-							  
+
 							  // Si en ese pago tiene descuento se aplica el descuento, pero si tiene retraso se aplica el recargo
 							  if(parseInt(pago.diasDescuento) <= parseInt(diasDiferencia)){
 								  arreglo[grupo._id].alumnos[alumno.alumno_id].modificador -= pago.importeDescuento;
 							  }else if(( diasDiferencia * -1) > parseInt(pago.diasRecargo)){
 								  arreglo[grupo._id].alumnos[alumno.alumno_id].modificador += pago.importeRecargo;
 							  }
-							  
+
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].pagos.push(pago);
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].fechaUltimoPago = ultimoPago.fechaPago;
-							  arreglo[grupo._id].alumnos[alumno.alumno_id].colegiaturaUltimoPago = ultimoPago.semana;						
+							  arreglo[grupo._id].alumnos[alumno.alumno_id].colegiaturaUltimoPago = ultimoPago.semana;
 								arreglo[grupo._id].alumnos[alumno.alumno_id].importeColegiatura = pago.importeRegular;
 						  }else{
 							  if(parseInt(pago.diasDescuento) <= parseInt(diasDiferencia)){
@@ -226,7 +226,7 @@ Meteor.methods({
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].pagos.push(pago);
 						  }
 					  }
-						
+
 					}else{
 						//Busco las semanas trasadas, pero todas
 						var pagos = PlanPagos.find({modulo : "colegiatura", seccion_id : seccion_id, fecha : { $lt : new Date() }, estatus : 0, alumno_id : alumno.alumno_id }).fetch();
@@ -234,9 +234,9 @@ Meteor.methods({
 							var tipoColegiatura = pago.tipoPlan;
 							var fechaPago = moment(pago.fecha).add(-1, "days");
 						  var diasDiferencia = fechaPago.diff(hoy, "days");
-							
+
 							if(undefined == arreglo[grupo._id]){
-									
+
 							  arreglo[grupo._id] = {};
 							  arreglo[grupo._id].alumnos = {};
 							  arreglo[grupo._id].grupo = grupo;
@@ -246,29 +246,29 @@ Meteor.methods({
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].abono = inscripcion.abono;
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].alumno = Meteor.users.findOne(pago.alumno_id, { fields : { profile : 1}});
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].pagos = [];
-							  
+
 							  if(parseInt(pago.diasDescuento) <= parseInt(diasDiferencia)){
 								  arreglo[grupo._id].alumnos[alumno.alumno_id].modificador = pago.importeDescuento;
 							  }else if(( diasDiferencia * -1) > parseInt(pago.diasRecargo)){
 								  arreglo[grupo._id].alumnos[alumno.alumno_id].modificador = pago.importeRecargo;
 								  pago.className = "text-danger";
 							  }
-							  
+
 								arreglo[grupo._id].alumnos[alumno.alumno_id].pagos.push(pago);
 								arreglo[grupo._id].alumnos[alumno.alumno_id].total = pago.importeRegular;
 							  arreglo[grupo._id].alumnos[alumno.alumno_id].fechaUltimoPago = ultimoPago.fechaPago;
-							  arreglo[grupo._id].alumnos[alumno.alumno_id].colegiaturaUltimoPago = ultimoPago.semana;						
+							  arreglo[grupo._id].alumnos[alumno.alumno_id].colegiaturaUltimoPago = ultimoPago.semana;
 								arreglo[grupo._id].alumnos[alumno.alumno_id].importeColegiatura = pago.importeRegular;
 						  }else{
 							  if(arreglo[grupo._id].alumnos[alumno.alumno_id] == undefined){
-		
+
 								  arreglo[grupo._id].alumnos[alumno.alumno_id] = {};
 								  arreglo[grupo._id].alumnos[alumno.alumno_id].alumno_id = pago.alumno_id;
 								  arreglo[grupo._id].alumnos[alumno.alumno_id].abono = inscripcion.abono;
 								  arreglo[grupo._id].alumnos[alumno.alumno_id].alumno = Meteor.users.findOne(pago.alumno_id, { fields : { profile : 1}});
 								  arreglo[grupo._id].alumnos[alumno.alumno_id].modificador = 0.00;
 								  arreglo[grupo._id].alumnos[alumno.alumno_id].pagos = [];
-								  
+
 								  // Si en ese pago tiene descuento se aplica el descuento, pero si tiene retraso se aplica el recargo
 								  if(parseInt(pago.diasDescuento) <= parseInt(diasDiferencia)){
 									  arreglo[grupo._id].alumnos[alumno.alumno_id].modificador -= pago.importeDescuento;
@@ -276,10 +276,10 @@ Meteor.methods({
 									  arreglo[grupo._id].alumnos[alumno.alumno_id].modificador += pago.importeRecargo;
 									  pago.className = "text-danger";
 								  }
-								  
+
 								  arreglo[grupo._id].alumnos[alumno.alumno_id].pagos.push(pago);
 								  arreglo[grupo._id].alumnos[alumno.alumno_id].fechaUltimoPago = ultimoPago.fechaPago;
-								  arreglo[grupo._id].alumnos[alumno.alumno_id].colegiaturaUltimoPago = ultimoPago.semana;						
+								  arreglo[grupo._id].alumnos[alumno.alumno_id].colegiaturaUltimoPago = ultimoPago.semana;
 									arreglo[grupo._id].alumnos[alumno.alumno_id].importeColegiatura = pago.importeRegular;
 							  }else{
 								  if(parseInt(pago.diasDescuento) <= parseInt(diasDiferencia)){
@@ -296,12 +296,12 @@ Meteor.methods({
 				}
 			})
 		})
-		
+
 		arreglo = _.toArray(arreglo);
 		_.each(arreglo,function(obj){
 			obj.alumnos = _.toArray(obj.alumnos);
 		});
-		
+
 		return arreglo;
 	},
 	modificarSemanasPlanPagos : function(alumno_id, planPagos) {
@@ -309,7 +309,7 @@ Meteor.methods({
 		_.each(planPagos, function(pago){
 			PlanPagos.insert(pago);
 		});
-		
+
 		return "hecho";
 	},
 	reporteComisionesGerentes : function(semana, anio, seccion_id, campus_id){
@@ -317,7 +317,7 @@ Meteor.methods({
 		//Busco las comisiones de los gerentes
 	  var comisionesGerente = Comisiones.find({semanaPago : semana, anioPago : anio, seccion_id : seccion_id, beneficiario : "gerente"}).fetch();
 	  var arreglo = {};
-	  
+
 	  //Agrupo las comisiones por cada gerente
 	  _.each(comisionesGerente, function(comision){
 		  if(arreglo[comision.gerente_id] == undefined){
@@ -331,7 +331,7 @@ Meteor.methods({
 				   arreglo[comision.gerente_id].dias[dia] = 0;
 			   })
 			   arreglo[comision.gerente_id].dias[dias[comision.diaPago]] = 1;
-			   
+
 		  }else{
 			   arreglo[comision.gerente_id].cantidad += 1;
 			   if(arreglo[comision.gerente_id].dias[dias[comision.diaPago]] == undefined){
@@ -340,7 +340,7 @@ Meteor.methods({
 			   }else{
 				   arreglo[comision.gerente_id].dias[dias[comision.diaPago]] += 1;
 			   }
-			   
+
 		  }
 	  });
 	  arreglo = _.toArray(arreglo);
@@ -362,17 +362,17 @@ Meteor.methods({
 						break;
 				}
 			});
-	  });	  
-	  
+	  });
+
 	  return arreglo;
-	  
+
 	},
 	reporteComisionesVendedores : function(semana, anio, seccion_id, campus_id){
 		dias = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
 	  var arreglo = {};
 	  //Busco las comisiones de los vendedores
 	  var comisionesVendedores = Comisiones.find({semanaPago : semana, anioPago : anio, seccion_id : seccion_id, beneficiario : "vendedor"}).fetch();
-	  
+
 	  //Agrupo las comisiones por cada vendedor
 	  _.each(comisionesVendedores, function(comision){
 		  if(arreglo[comision.vendedor_id] == undefined){
@@ -396,7 +396,7 @@ Meteor.methods({
 			   }else{
 				   arreglo[comision.vendedor_id].dias[dias[comision.diaPago]] += 1;
 			   }
-			   
+
 		  }
 	  });
 	  arreglo = _.toArray(arreglo);
@@ -419,10 +419,10 @@ Meteor.methods({
 				}
 			});
 			vendedor.total = vendedor.bono + vendedor.comision;
-	  });	  
-	  
+	  });
+
 	  return arreglo;
-	  
+
 	},
 	getPagosPorSemana : function(semanaPago, anioPago, campus_id){
 		var pagos = PlanPagos.find( {campus_id : campus_id, semanaPago : semanaPago, estatus : 1, anioPago : anioPago}, {sort : {fecha : 1}}).fetch();
@@ -440,12 +440,11 @@ Meteor.methods({
 				arreglo[pago.alumno_id].semanasPagadas.push(pago.semana);
 			}
 		})
-		
+
 		return _.toArray(arreglo);
 	},
 	getAlumnosReprobados : function(campus_id){
 		var reprobados = Reprobados.find({campus_id : campus_id, estatus : true}).fetch();
-		console.log(reprobados);
 		var alumnosReprobados = {};
 		_.each(reprobados, function(alumno){
 			if(alumnosReprobados[alumno.materia_id] == undefined){
@@ -469,7 +468,7 @@ Meteor.methods({
 				alumnosReprobados[alumno.materia_id].alumnos.push(obj);
 			}
 		})
-		
+
 		return _.toArray(alumnosReprobados);
 	}
 })
