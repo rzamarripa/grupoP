@@ -14,10 +14,11 @@ angular.module("casserole")
 	this.ciudades = [];
 	window.rc = rc;
 	this.marcas = [];
-	
-	Meteor.apply("getMarcas", [], function(error, result){
+
+	Meteor.apply("getMarcasSinImagen", [], function(error, result){
 		if(result){
 			rc.marcas = result;
+			console.log(result);
 			$scope.$apply();
 		}
 
@@ -25,7 +26,7 @@ angular.module("casserole")
 			console.log(error);
 		}
 	});
-	
+
 	Meteor.apply("getEstados", [], function(error, result){
 		if(result){
 			rc.estados = result;
@@ -36,7 +37,7 @@ angular.module("casserole")
 			console.log(error);
 		}
 	});
-	
+
 	Meteor.apply("getTiposVehiculos", [], function(error, result){
 		if(result){
 			rc.tiposVehiculos = result;
@@ -58,7 +59,7 @@ angular.module("casserole")
 				NProgress.done()
 				$scope.$apply();
 			}
-	
+
 			if(error){
 				console.log(error);
 			}
@@ -80,12 +81,12 @@ angular.module("casserole")
 				toastr.success("Gracias por contactarnos, nosotros nos pondremos en contacto lo antes posible.")
 			  NProgress.done();
 		  }
-		  
+
 		  if(error){
 			  console.log(error);
 		  }
 	  })
-	  
+
 	  rc.correo = {};
   }
 
@@ -99,13 +100,13 @@ angular.module("casserole")
 	  precioHasta = precioHasta.replace(/,/g, '') || 9999999999999;
 		NProgress.set(0.4)
 	  Meteor.apply("getVersionesPorTipoVehiculo", [tipoVehiculo_id, precioDesde, precioHasta], function(error, result){
-		  
+
 			if(result){
 				rc.versiones = result;
 				$scope.$apply();
 				NProgress.done();
 			}
-	
+
 			if(error){
 				console.log(error);
 			}
@@ -122,7 +123,7 @@ angular.module("casserole")
 			  NProgress.done();
 				$scope.$apply();
 			}
-	
+
 			if(error){
 				console.log(error);
 			}
@@ -137,7 +138,7 @@ angular.module("casserole")
 				NProgress.done();
 				$scope.$apply();
 			}
-	
+
 			if(error){
 				console.log(error);
 			}
@@ -150,22 +151,23 @@ angular.module("casserole")
 	  rc.deDonde = "";
 	  rc.correo = {};
   }
-  
+
   this.getModelos = function(marca_id){
 	  NProgress.start();
-	  Meteor.apply("getModelos", [marca_id], function(error, result){
+	  Meteor.apply("getModelosSinImagen", [marca_id], function(error, result){
 			if(result){
 				rc.modelos = result;
+				console.log(result);
 				NProgress.done();
 				$scope.$apply();
 			}
-	
+
 			if(error){
 				console.log(error);
 			}
 		});
   }
-  
+
   this.getVersiones = function(modelo_id){
 	  NProgress.start();
 	  Meteor.apply("getVersiones", [modelo_id], function(error, result){
@@ -174,7 +176,7 @@ angular.module("casserole")
 				NProgress.done();
 				$scope.$apply();
 			}
-	
+
 			if(error){
 				console.log(error);
 			}

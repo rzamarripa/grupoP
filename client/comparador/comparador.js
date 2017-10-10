@@ -140,7 +140,7 @@ angular.module("casserole")
 	this.numero = 0;
 	window.rc = rc;
 
-  
+
 	this.subscribe('agencias',()=>{
 		return [{estatus : true}]
 	});
@@ -170,8 +170,8 @@ angular.module("casserole")
 		  return Estados.find();
 	  }
   });
-  
-  Meteor.apply("getMarcas", [], function(error, result){
+
+  Meteor.apply("getMarcasSinImagen", [], function(error, result){
 		if(result){
 			rc.marcas = result;
 			$scope.$apply();
@@ -224,7 +224,7 @@ angular.module("casserole")
 			  NProgress.done();
 				$scope.$apply();
 			}
-	
+
 			if(error){
 				console.log(error);
 			}
@@ -234,7 +234,7 @@ angular.module("casserole")
 
   this.enviarEmail = function(formModal, correo){
 		rc.deDonde = "Comparador";
-		
+
 		NProgress.start();
 	  if(formModal.$invalid){
       toastr.error('Los campos rojos no pueden ir vacíos y debe ser un correo válido.');
@@ -249,16 +249,16 @@ angular.module("casserole")
 				toastr.success("Gracias por contactarnos, nosotros nos pondremos en contacto lo antes posible.")
 			  NProgress.done();
 		  }
-		  
+
 		  if(error){
 			  console.log(error);
 		  }
 	  })
-	  
+
 	  rc.correo = {};
-	  
+
 /*
-	  
+
 	  if(formModal.$invalid){
       toastr.error('Los campos rojos no pueden ir vacíos y debe ser un correo válido.');
       return;
